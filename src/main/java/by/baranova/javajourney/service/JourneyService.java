@@ -23,7 +23,6 @@ public class JourneyService {
         return journeyRepository.findById(id).orElse(null);
     }
 
-
     public void deleteById(Long id) {
         journeyRepository.deleteById(id);
     }

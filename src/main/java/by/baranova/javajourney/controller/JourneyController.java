@@ -33,8 +33,8 @@ public class JourneyController {
 
     @DeleteMapping("/delete")
     public String handleJourneyDeleteByCountry(@RequestParam(name = "country") String country) {
-            journeyService.deleteByCountry(country);
-            return "Successfully deleted journeys in " + country;
+        journeyService.deleteByCountry(country);
+        return "Successfully deleted journeys in " + country;
     }
 
     @PostMapping("/new")
@@ -45,13 +45,13 @@ public class JourneyController {
 
     @PutMapping("/{id}")
     public String handleJourneyUpdate(@PathVariable Long id, @Valid @RequestBody JourneyDto journey) {
-            journeyService.update(id, journey);
-            return "Successfully updated journey with id " + id;
+        journeyService.update(id, journey);
+        return "Successfully updated journey with id " + id;
     }
 
     @DeleteMapping("/{id}")
     public String handleJourneyDelete(@PathVariable Long id) {
-            journeyService.deleteById(id);
-            return "Successfully deleted journey with id " + id;
+        journeyService.deleteById(id);
+        return "Successfully deleted journey with id " + id;
     }
 }

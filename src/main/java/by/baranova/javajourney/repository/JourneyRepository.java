@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-
 @Repository
 public class JourneyRepository {
 
@@ -52,7 +51,7 @@ public class JourneyRepository {
 
 
     public void deleteById(Long id) {
-        if(findById(id).isEmpty())  throw new EntityNotFoundException("Путешествие с id " + id + " не найдено");
+        if (findById(id).isEmpty()) throw new EntityNotFoundException("Путешествие с id " + id + " не найдено");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -75,7 +74,8 @@ public class JourneyRepository {
     }
 
     public void deleteByCountry(String country) {
-        if(findByCountry(country).isEmpty()) throw new EntityNotFoundException("Путешествие в " + country + " не существует");
+        if (findByCountry(country).isEmpty())
+            throw new EntityNotFoundException("Путешествие в " + country + " не существует");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -92,7 +92,7 @@ public class JourneyRepository {
     }
 
     public void update(Long id, JourneyDto journey) {
-        if(findById(id).isEmpty())  throw new EntityNotFoundException("Путешествие с id " + id + " не существует");
+        if (findById(id).isEmpty()) throw new EntityNotFoundException("Путешествие с id " + id + " не существует");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery(CONST_UPDATE);
 
