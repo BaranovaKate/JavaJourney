@@ -52,7 +52,7 @@ public class JourneyRepository {
 
 
     public void deleteById(Long id) {
-        if(findById(id).isEmpty())  throw new EntityNotFoundException("Entity with id " + id + " not found");;
+        if(findById(id).isEmpty())  throw new EntityNotFoundException("Entity with id " + id + " not found");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -75,7 +75,7 @@ public class JourneyRepository {
     }
 
     public void deleteByCountry(String country) {
-        if(findByCountry(country).isEmpty()) throw new EntityNotFoundException("Entity with id " + country + " not found");;
+        if(findByCountry(country).isEmpty()) throw new EntityNotFoundException("Entity with id " + country + " not found");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -88,13 +88,11 @@ public class JourneyRepository {
 
     public void save(JourneyDto journeyDto) {
         final Journey journey = journeyMapper.toEntity(journeyDto);
-        sessionFactory.inTransaction(session -> {
-            session.persist(journey);
-        });
+        sessionFactory.inTransaction(session -> session.persist(journey));
     }
 
     public void update(Long id, JourneyDto journey) {
-        if(findById(id).isEmpty())  throw new EntityNotFoundException("Entity with id " + id + " not found");;
+        if(findById(id).isEmpty())  throw new EntityNotFoundException("Entity with id " + id + " not found");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery(CONST_UPDATE);
 
