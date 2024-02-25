@@ -52,7 +52,7 @@ public class JourneyRepository {
 
 
     public void deleteById(Long id) {
-        if(findById(id).isEmpty())  throw new EntityNotFoundException("Entity with id " + id + " not found");
+        if(findById(id).isEmpty())  throw new EntityNotFoundException("Путешествие с id " + id + " не существует");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -75,7 +75,7 @@ public class JourneyRepository {
     }
 
     public void deleteByCountry(String country) {
-        if(findByCountry(country).isEmpty()) throw new EntityNotFoundException("Entity with id " + country + " not found");
+        if(findByCountry(country).isEmpty()) throw new EntityNotFoundException("Путешествие в " + country + " не существует");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -92,7 +92,7 @@ public class JourneyRepository {
     }
 
     public void update(Long id, JourneyDto journey) {
-        if(findById(id).isEmpty())  throw new EntityNotFoundException("Entity with id " + id + " not found");
+        if(findById(id).isEmpty())  throw new EntityNotFoundException("Путешествие с id " + id + " не существует");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery(CONST_UPDATE);
 
