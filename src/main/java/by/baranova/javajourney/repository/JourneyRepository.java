@@ -51,7 +51,7 @@ public class JourneyRepository {
 
 
     public void deleteById(Long id) {
-        if(findById(id).isEmpty()) throw new RuntimeException();
+        if(findById(id).isEmpty()) throw new RuntimeException("Journey with such id doesn't exist");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -74,7 +74,7 @@ public class JourneyRepository {
     }
 
     public void deleteByCountry(String country) {
-        if(findByCountry(country).isEmpty()) throw new RuntimeException();
+        if(findByCountry(country).isEmpty()) throw new RuntimeException("Journey with such country doesn't exist");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -93,7 +93,7 @@ public class JourneyRepository {
     }
 
     public void update(Long id, JourneyDto journey) {
-        if(findById(id).isEmpty()) throw new RuntimeException();
+        if(findById(id).isEmpty()) throw new RuntimeException("Journey with such id doesn't exist");
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery(CONST_UPDATE);
 
