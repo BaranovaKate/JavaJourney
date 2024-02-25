@@ -1,5 +1,6 @@
 package by.baranova.javajourney.repository;
 
+import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.mapper.JourneyMapper;
@@ -49,13 +50,9 @@ public class JourneyRepository {
         });
     }
 
-    public void check(Long id){
-        if(findById(id).isEmpty()) throw new RuntimeException();
-    }
 
     public void deleteById(Long id) {
-        check(id);
-      //  if(findById(id).isEmpty()) throw new RuntimeException();
+        if(findById(id).isEmpty())  throw new EntityNotFoundException("Entity with id " + id + " not found");;
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -77,12 +74,8 @@ public class JourneyRepository {
                 .toList();
     }
 
-    public void checkCountry(String country){
-        if(findByCountry(country).isEmpty()) throw new RuntimeException();
-    }
     public void deleteByCountry(String country) {
-        checkCountry(country);
-      //  if(findByCountry(country).isEmpty()) throw new RuntimeException("Journey with such country doesn't exist");
+        if(findByCountry(country).isEmpty()) throw new EntityNotFoundException("Entity with id " + country + " not found");;
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -101,8 +94,7 @@ public class JourneyRepository {
     }
 
     public void update(Long id, JourneyDto journey) {
-        check(id);
-      //  if(findById(id).isEmpty()) throw new RuntimeException("Journey with such id doesn't exist");
+        if(findById(id).isEmpty())  throw new EntityNotFoundException("Entity with id " + id + " not found");;
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery(CONST_UPDATE);
 
