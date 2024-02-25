@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/journeys")
@@ -28,10 +27,9 @@ public class JourneyController {
     }
 
     @GetMapping("/{id}")
-    public Optional<JourneyDto> findJourney(@PathVariable("id") Long id) {
+    public JourneyDto findJourney(@PathVariable("id") Long id) {
         return journeyService.findJourneyById(id);
     }
-
 
     @DeleteMapping("/delete")
     public String handleJourneyDeleteByCountry(@RequestParam(name = "country") String country) {

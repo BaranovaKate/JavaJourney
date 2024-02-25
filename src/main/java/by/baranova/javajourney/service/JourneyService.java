@@ -5,7 +5,6 @@ import by.baranova.javajourney.repository.JourneyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class JourneyService {
@@ -20,9 +19,10 @@ public class JourneyService {
         return journeyRepository.findAll();
     }
 
-    public Optional<JourneyDto> findJourneyById(Long id) {
-        return journeyRepository.findById(id);
+    public JourneyDto findJourneyById(Long id) {
+        return journeyRepository.findById(id).orElse(null);
     }
+
 
     public void deleteById(Long id) {
         journeyRepository.deleteById(id);

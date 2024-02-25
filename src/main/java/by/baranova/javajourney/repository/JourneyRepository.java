@@ -12,9 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
-
-
 @Repository
 public class JourneyRepository {
 
@@ -22,12 +19,12 @@ public class JourneyRepository {
     private final JourneyMapper journeyMapper;
     private static final String CONST_COUNTRY = "country";
     private static final String CONST_UPDATE = """
-                    UPDATE Journey S SET\s
-                       S.country = :country,\s
-                       S.town = :town,\s
-                       S.dateToJourney = :dateToJourney,\s
-                       S.dateFromJourney = :dateFromJourney
-                    WHERE S.id = :id""";
+            UPDATE Journey S SET\s
+               S.country = :country,\s
+               S.town = :town,\s
+               S.dateToJourney = :dateToJourney,\s
+               S.dateFromJourney = :dateFromJourney
+            WHERE S.id = :id""";
 
     public JourneyRepository(SessionFactory sessionFactory, JourneyMapper journeyMapper) {
         this.sessionFactory = sessionFactory;
@@ -52,7 +49,9 @@ public class JourneyRepository {
         });
     }
 
+
     public void deleteById(Long id) {
+        if(findById(id).isEmpty()) throw new RuntimeException();
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -75,11 +74,12 @@ public class JourneyRepository {
     }
 
     public void deleteByCountry(String country) {
+        if(findByCountry(country).isEmpty()) throw new RuntimeException();
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
-                DELETE FROM Journey
-                WHERE country = :country
-                """);
+                    DELETE FROM Journey
+                    WHERE country = :country
+                    """);
             query.setParameter(CONST_COUNTRY, country);
             query.executeUpdate();
         });
@@ -93,6 +93,7 @@ public class JourneyRepository {
     }
 
     public void update(Long id, JourneyDto journey) {
+        if(findById(id).isEmpty()) throw new RuntimeException();
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery(CONST_UPDATE);
 
