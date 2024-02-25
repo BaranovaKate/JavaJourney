@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ошибка</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body class="container-md">
+    <h1>Ошибка</h1>
+    <p th:text="${errorMessage}"></p>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
