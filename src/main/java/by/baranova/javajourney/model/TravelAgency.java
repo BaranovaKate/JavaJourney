@@ -1,4 +1,5 @@
 package by.baranova.javajourney.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public class TravelAgency {
     @Column(name = "name", nullable = false, length = 64)
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "travelAgency", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "travelAgency", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("travelAgency")
     private List<Journey> journeys;
 
     public Long getId() {

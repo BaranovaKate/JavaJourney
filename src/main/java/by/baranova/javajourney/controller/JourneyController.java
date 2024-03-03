@@ -13,7 +13,7 @@ public class JourneyController {
 
     private final JourneyService journeyService;
 
-    public JourneyController(JourneyService journeyService) {
+    public JourneyController( JourneyService journeyService) {
         this.journeyService = journeyService;
     }
 

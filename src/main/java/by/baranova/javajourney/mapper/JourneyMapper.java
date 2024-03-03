@@ -5,7 +5,6 @@ import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class JourneyMapper {
 

@@ -1,5 +1,6 @@
 package by.baranova.javajourney.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class Journey {
 
     @ManyToOne
     @JoinColumn(name = "travel_agency_id", nullable = false)
+    @JsonIgnoreProperties("journeys")
     private TravelAgency travelAgency;
 
     public Journey() {

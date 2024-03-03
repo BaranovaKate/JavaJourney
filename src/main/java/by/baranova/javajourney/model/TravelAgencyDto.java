@@ -1,16 +1,12 @@
 package by.baranova.javajourney.model;
 import jakarta.validation.constraints.NotNull;
 
-
 public class TravelAgencyDto {
-
-
     @NotNull
     private Long id;
 
     @NotNull
     private String name;
-
 
     public Long getId() {
         return id;
@@ -27,7 +23,6 @@ public class TravelAgencyDto {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public TravelAgencyDto() {
     }
