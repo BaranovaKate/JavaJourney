@@ -2,6 +2,7 @@ package by.baranova.javajourney.service;
 
 import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,13 @@ public class JourneyService {
         this.journeyRepository = journeyRepository;
     }
 
+
+    // @Transactional
     public List<JourneyDto> findJourneys() {
         return journeyRepository.findAll();
     }
+
+
 
     public JourneyDto findJourneyById(Long id) {
         return journeyRepository.findById(id).orElse(null);

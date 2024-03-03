@@ -3,10 +3,22 @@ package by.baranova.javajourney.mapper;
 
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.JourneyDto;
+import by.baranova.javajourney.model.TravelAgency;
+import by.baranova.javajourney.model.TravelAgencyDto;
+import by.baranova.javajourney.repository.TravelAgencyRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class JourneyMapper {
+
+    public final TravelAgencyRepository travelAgencyRepository;
+
+    public JourneyMapper(TravelAgencyRepository travelAgencyRepository) {
+        this.travelAgencyRepository = travelAgencyRepository;
+    }
+
     public JourneyDto toDto(Journey journey) {
         final JourneyDto dto = new JourneyDto();
         dto.setId(journey.getId());
@@ -14,7 +26,8 @@ public class JourneyMapper {
         dto.setTown(journey.getTown());
         dto.setDateToJourney(journey.getDateToJourney());
         dto.setDateFromJourney(journey.getDateFromJourney());
-
+        dto.setTravelAgency(
+                TravelAgencyMapper.toDto(journey.getTravelAgency()));
         return dto;
     }
 
@@ -25,6 +38,8 @@ public class JourneyMapper {
         entity.setTown(dto.getTown());
         entity.setDateToJourney(dto.getDateToJourney());
         entity.setDateFromJourney(dto.getDateFromJourney());
+        TravelAgency travelAgency = travelAgencyRepository.findById(dto.getTravelAgency().getId());
+        entity.setTravelAgency(travelAgency);
 
         return entity;
     }

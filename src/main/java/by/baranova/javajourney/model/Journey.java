@@ -25,8 +25,18 @@ public class Journey {
     @Column(name = "dateFromJourney", nullable = false)
     private LocalDate dateFromJourney;
 
+    @ManyToOne
+    @JoinColumn(name = "travel_agency_id", nullable = false)
+    private TravelAgency travelAgency;
 
     public Journey() {
+    }
+    public TravelAgency getTravelAgency() {
+        return travelAgency;
+    }
+
+    public void setTravelAgency(TravelAgency phoneNumber) {
+        this.travelAgency = phoneNumber;
     }
 
     public Long getId() {
@@ -69,14 +79,6 @@ public class Journey {
         this.dateFromJourney = dateFromJourney;
     }
 
-    public Journey(Long id, String country, String town, LocalDate dateToJourney, LocalDate dateFromJourney) {
-        this.id = id;
-        this.country = country;
-        this.town = town;
-        this.dateToJourney = dateToJourney;
-        this.dateFromJourney = dateFromJourney;
-    }
-
     @Override
     public String toString() {
         return "Journey{" +
@@ -85,6 +87,16 @@ public class Journey {
                 ", town='" + town + '\'' +
                 ", dateToJourney=" + dateToJourney +
                 ", dateFromJourney=" + dateFromJourney +
+                ", phoneNumber='" + travelAgency + '\'' +
                 '}';
+    }
+
+    public Journey(Long id, String country, String town, LocalDate dateToJourney, LocalDate dateFromJourney, TravelAgency travelAgency) {
+        this.id = id;
+        this.country = country;
+        this.town = town;
+        this.dateToJourney = dateToJourney;
+        this.dateFromJourney = dateFromJourney;
+        this.travelAgency = travelAgency;
     }
 }

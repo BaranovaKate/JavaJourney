@@ -1,6 +1,7 @@
 package by.baranova.javajourney.config;
 
 import by.baranova.javajourney.model.Journey;
+import by.baranova.javajourney.model.TravelAgency;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -16,7 +17,9 @@ public class HibernateConfig {
 
         return new MetadataSources(registry)
                 .addAnnotatedClass(Journey.class)
+                .addAnnotatedClass(TravelAgency.class)
                 .buildMetadata()
                 .buildSessionFactory();
     }
+
 }

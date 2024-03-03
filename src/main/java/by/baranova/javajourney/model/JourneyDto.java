@@ -24,7 +24,17 @@ public class JourneyDto {
     @NotNull
     private LocalDate dateFromJourney;
 
+    private TravelAgencyDto travelAgency;
+
     public JourneyDto() {
+    }
+
+    public TravelAgencyDto getTravelAgency() {
+        return travelAgency;
+    }
+
+    public void setTravelAgency(TravelAgencyDto travelAgency) {
+        this.travelAgency = travelAgency;
     }
 
     public Long getId() {
@@ -63,15 +73,17 @@ public class JourneyDto {
         return dateFromJourney;
     }
 
-    public JourneyDto(Long id, String country, String town, LocalDate dateToJourney, LocalDate dateFromJourney) {
+    public JourneyDto(Long id, String country, String town, LocalDate dateToJourney, LocalDate dateFromJourney, TravelAgencyDto travelAgency) {
         this.id = id;
         this.country = country;
         this.town = town;
         this.dateToJourney = dateToJourney;
         this.dateFromJourney = dateFromJourney;
+        this.travelAgency = travelAgency;
     }
 
     public void setDateFromJourney(LocalDate dateFromJourney) {
         this.dateFromJourney = dateFromJourney;
     }
+
 }
