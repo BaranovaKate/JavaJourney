@@ -1,14 +1,10 @@
 package by.baranova.javajourney.mapper;
-
-
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.model.TravelAgency;
-import by.baranova.javajourney.model.TravelAgencyDto;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 
 @Component
 public class JourneyMapper {

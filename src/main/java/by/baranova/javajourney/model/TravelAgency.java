@@ -1,6 +1,4 @@
 package by.baranova.javajourney.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,7 +16,6 @@ public class TravelAgency {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "travelAgency", cascade = CascadeType.ALL)
-    //  @JsonIgnore
     private List<Journey> journeys;
 
     public TravelAgency() {
