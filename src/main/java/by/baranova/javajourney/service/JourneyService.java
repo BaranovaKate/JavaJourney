@@ -19,8 +19,6 @@ public class JourneyService {
         return journeyRepository.findAll();
     }
 
-
-
     public JourneyDto findJourneyById(Long id) {
         return journeyRepository.findById(id).orElse(null);
     }
