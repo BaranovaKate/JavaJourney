@@ -13,4 +13,7 @@ public class TravelAgencyMapper {
         dto.setName(travelAgency.getName());
         return dto;
     }
+
+    private TravelAgencyMapper() {
+    }
 }
