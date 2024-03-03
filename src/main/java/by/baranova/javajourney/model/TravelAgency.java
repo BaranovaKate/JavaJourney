@@ -18,9 +18,6 @@ public class TravelAgency {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "travelAgency", cascade = CascadeType.ALL)
     private List<Journey> journeys;
 
-    public TravelAgency() {
-    }
-
     public Long getId() {
         return id;
     }
