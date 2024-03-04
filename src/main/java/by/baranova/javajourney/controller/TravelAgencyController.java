@@ -1,12 +1,9 @@
 package by.baranova.javajourney.controller;
 
-import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.model.TravelAgencyDto;
 import by.baranova.javajourney.service.AgencyService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -45,6 +42,4 @@ public class TravelAgencyController {
         agencyService.update(id, travelAgency);
         return "Successfully updated journey with id " + id;
     }
-
-
 }
