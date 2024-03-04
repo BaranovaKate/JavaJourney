@@ -2,6 +2,7 @@ package by.baranova.javajourney.repository;
 
 import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.TravelAgency;
+import by.baranova.javajourney.model.TravelAgencyDto;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
@@ -46,4 +47,22 @@ public class TravelAgencyRepository {
             query.executeUpdate();
         });
     }
+
+    public void update(Long id, TravelAgencyDto updatedAgency) {
+        if (findById(id) == null) {
+            throw new EntityNotFoundException("Агентство с id " + id + " не существует");
+        }
+        sessionFactory.inTransaction(session -> {
+            final MutationQuery query = session.createMutationQuery("""
+                    UPDATE TravelAgency T SET
+                       T.name = :name
+                    WHERE T.id = :id
+                    """);
+
+            query.setParameter("id", id);
+            query.setParameter("name", updatedAgency.getName());
+            query.executeUpdate();
+        });
+    }
+
 }

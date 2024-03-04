@@ -3,6 +3,7 @@ package by.baranova.javajourney.service;
 import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.TravelAgency;
+import by.baranova.javajourney.model.TravelAgencyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import org.springframework.stereotype.Service;
@@ -44,4 +45,9 @@ public class AgencyService {
 
         travelAgencyRepository.deleteById(id);
     }
+
+    public void update(Long id, TravelAgencyDto updatedAgency) {
+        travelAgencyRepository.update(id, updatedAgency);
+    }
+
 }
