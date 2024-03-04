@@ -1,11 +1,8 @@
 package by.baranova.javajourney.model;
-import jakarta.validation.constraints.NotNull;
 
 public class TravelAgencyDto {
-    @NotNull
     private Long id;
 
-    @NotNull
     private String name;
 
     public Long getId() {

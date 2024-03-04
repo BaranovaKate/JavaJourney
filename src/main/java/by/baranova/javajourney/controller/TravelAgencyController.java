@@ -1,33 +1,39 @@
 package by.baranova.javajourney.controller;
 
 import by.baranova.javajourney.model.TravelAgency;
-import by.baranova.javajourney.repository.TravelAgencyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import by.baranova.javajourney.service.AgencyService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/travel-agencies")
 public class TravelAgencyController {
+    private final AgencyService agencyService;
 
-    private final TravelAgencyRepository travelAgencyRepository;
-
-    // @Autowired
-    public TravelAgencyController(TravelAgencyRepository travelAgencyRepository) {
-        this.travelAgencyRepository = travelAgencyRepository;
+    public TravelAgencyController(AgencyService agencyService) {
+        this.agencyService = agencyService;
     }
 
     @GetMapping("/{id}")
     public TravelAgency getTravelAgencyById(@PathVariable Long id) {
-        return travelAgencyRepository.findById(id);
+        return agencyService.findAgencyById(id);
     }
 
     @GetMapping("/all")
     public List<TravelAgency> getAllTravelAgenciesWithJourneys() {
-        return travelAgencyRepository.findAllWithJourneys();
+        return agencyService.findAgencies();
+    }
+
+    @PostMapping("/create")
+    public String createTravelAgency(@RequestBody TravelAgency newTravelAgency) {
+        agencyService.save(newTravelAgency);
+        return "Successfully created a new agency";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteTravelAgencyById(@PathVariable Long id) {
+        agencyService.deleteById(id);
+        return "Successfully deleted the agency with id: " + id;
     }
 }

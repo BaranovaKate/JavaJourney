@@ -105,4 +105,13 @@ public class JourneyRepository {
             query.executeUpdate();
         });
     }
+
+    public List<Journey> findByTravelAgencyId(Long travelAgencyId) {
+        return sessionFactory.fromSession(session -> {
+            Query<Journey> query = session.createQuery(
+                    "FROM Journey J WHERE J.travelAgency.id = :travelAgencyId", Journey.class);
+            query.setParameter("travelAgencyId", travelAgencyId);
+            return query.list();
+        });
+    }
 }
