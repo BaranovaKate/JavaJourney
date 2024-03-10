@@ -6,10 +6,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
+@EnableCaching
 public class HibernateConfig {
     @Bean
     public SessionFactory sessionFactory() {
@@ -21,4 +24,5 @@ public class HibernateConfig {
                 .buildMetadata()
                 .buildSessionFactory();
     }
+
 }

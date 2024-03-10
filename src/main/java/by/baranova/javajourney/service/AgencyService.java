@@ -6,9 +6,12 @@ import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.model.TravelAgencyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AgencyService {
@@ -22,18 +25,23 @@ public class AgencyService {
         this.journeyRepository = journeyRepository;
     }
 
+    @Cacheable("agencies")
     public List<TravelAgency> findAgencies() {
         return travelAgencyRepository.findAllWithJourneys();
     }
 
-    public TravelAgency findAgencyById(Long id) {
+    @Cacheable("agencies")
+    public TravelAgency findAgencyById(Long id) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(3L);
         return travelAgencyRepository.findById(id);
     }
 
+    @CacheEvict(value = "agencies", allEntries = true)
     public void save(TravelAgency travelAgency) {
         travelAgencyRepository.save(travelAgency);
     }
 
+    @CacheEvict(value = "agencies", allEntries = true)
     public void deleteById(Long id) {
         TravelAgency agencyToDelete = travelAgencyRepository.findById(id);
 
@@ -46,8 +54,8 @@ public class AgencyService {
         travelAgencyRepository.deleteById(id);
     }
 
+    @CacheEvict(value = "agencies", allEntries = true)
     public void update(Long id, TravelAgencyDto updatedAgency) {
         travelAgencyRepository.update(id, updatedAgency);
     }
-
 }

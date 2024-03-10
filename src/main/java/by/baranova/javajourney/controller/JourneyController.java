@@ -27,7 +27,7 @@ public class JourneyController {
     }
 
     @GetMapping("/{id}")
-    public JourneyDto findJourney(@PathVariable("id") Long id) {
+    public JourneyDto findJourney(@PathVariable("id") Long id) throws InterruptedException {
         return journeyService.findJourneyById(id);
     }
 

@@ -16,7 +16,7 @@ public class TravelAgencyController {
     }
 
     @GetMapping("/{id}")
-    public TravelAgency getTravelAgencyById(@PathVariable Long id) {
+    public TravelAgency getTravelAgencyById(@PathVariable Long id) throws InterruptedException {
         return agencyService.findAgencyById(id);
     }
 
