@@ -1,39 +1,16 @@
 package by.baranova.javajourney.model;
 
+import lombok.Data;
+
+/**
+ * Data Transfer Object (DTO) class representing a travel agency.
+ * Used for transferring data between layers of the application.
+ */
+@Data
 public class TravelAgencyDto {
+
     private Long id;
 
     private String name;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public TravelAgencyDto() {
-    }
-
-    public TravelAgencyDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "TravelAgencyDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

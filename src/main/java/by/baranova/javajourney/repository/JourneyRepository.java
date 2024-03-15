@@ -4,6 +4,7 @@ import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.mapper.JourneyMapper;
+import lombok.AllArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
@@ -12,6 +13,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository class for handling CRUD operations related to Journey entities.
+ */
+@AllArgsConstructor
 @Repository
 public class JourneyRepository {
 
@@ -27,14 +32,16 @@ public class JourneyRepository {
                J.travelAgency.id = :travel_agency_id
             WHERE J.id = :id""";
 
-    public JourneyRepository(SessionFactory sessionFactory, JourneyMapper journeyMapper) {
-        this.sessionFactory = sessionFactory;
-        this.journeyMapper = journeyMapper;
-    }
-
+    /**
+     * Retrieves a list of all journeys along
+     * with their associated travel agencies.
+     *
+     * @return A list of JourneyDto representing all journeys.
+     */
     public List<JourneyDto> findAll() {
         final List<Journey> journeys = sessionFactory.fromSession(session -> {
-            Query<Journey> query = session.createQuery("FROM Journey j JOIN FETCH j.travelAgency ", Journey.class);
+            Query<Journey> query = session.createQuery(
+                    "FROM Journey j JOIN FETCH j.travelAgency ", Journey.class);
             return query.list();
         });
         return journeys.stream()
@@ -42,16 +49,34 @@ public class JourneyRepository {
                 .toList();
     }
 
-    public Optional<JourneyDto> findById(Long id) {
+    /**
+     * Retrieves a journey by its ID along with its associated travel agency.
+     *
+     * @param id The ID of the journey to retrieve.
+     * @return An Optional containing the JourneyDto if found, otherwise empty.
+     */
+    public Optional<JourneyDto> findById(final Long id) {
         return sessionFactory.fromSession(session -> {
-            Query<Journey> query = session.createQuery("FROM Journey J JOIN FETCH J.travelAgency WHERE J.id = :id", Journey.class);
+            Query<Journey> query = session.createQuery("""
+                    FROM Journey J JOIN FETCH J.travelAgency\s
+                    WHERE J.id = :id""", Journey.class);
             query.setParameter("id", id);
             return query.uniqueResultOptional().map(journeyMapper::toDto);
         });
     }
 
-    public void deleteById(Long id) {
-        if (findById(id).isEmpty()) throw new EntityNotFoundException("Путешествие с id " + id + " не найдено");
+    /**
+     * Deletes a journey by its ID.
+     *
+     * @param id The ID of the journey to delete.
+     * @throws EntityNotFoundException If the journey
+     * with the specified ID is not found.
+     */
+    public void deleteById(final Long id) {
+        if (findById(id).isEmpty()) {
+            throw new EntityNotFoundException(
+                    "Путешествие с id " + id + " не найдено");
+        }
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -62,9 +87,20 @@ public class JourneyRepository {
         });
     }
 
-    public List<JourneyDto> findByCountry(String country) {
+    /**
+     * Retrieves a list of journeys by country
+     * along with their associated travel agencies.
+     *
+     * @param country The country to filter the journeys by.
+     * @return A list of JourneyDto representing
+     * journeys in the specified country.
+     */
+    public List<JourneyDto> findByCountry(final String country) {
         final List<Journey> journeys = sessionFactory.fromSession(session -> {
-            Query<Journey> query = session.createQuery("FROM Journey J JOIN FETCH J.travelAgency WHERE J.country = :country", Journey.class);
+            Query<Journey> query = session.createQuery("""
+                            FROM Journey J JOIN FETCH J.travelAgency\s
+                            WHERE J.country = :country""",
+                    Journey.class);
             query.setParameter(CONST_COUNTRY, country);
             return query.list();
         });
@@ -73,9 +109,18 @@ public class JourneyRepository {
                 .toList();
     }
 
-    public void deleteByCountry(String country) {
-        if (findByCountry(country).isEmpty())
-            throw new EntityNotFoundException("Путешествие в " + country + " не существует");
+    /**
+     * Deletes journeys by country.
+     *
+     * @param country The country to delete journeys from.
+     * @throws EntityNotFoundException If there are
+     * no journeys in the specified country.
+     */
+    public void deleteByCountry(final String country) {
+        if (findByCountry(country).isEmpty()) {
+            throw new EntityNotFoundException(
+                    "Путешествие в " + country + " не существует");
+        }
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
                     DELETE FROM Journey
@@ -86,30 +131,58 @@ public class JourneyRepository {
         });
     }
 
-    public void save(JourneyDto journeyDto) {
+    /**
+     * Saves a new journey.
+     *
+     * @param journeyDto The JourneyDto representing the new journey.
+     */
+    public void save(final JourneyDto journeyDto) {
         final Journey journey = journeyMapper.toEntity(journeyDto);
         sessionFactory.inTransaction(session -> session.persist(journey));
     }
 
-    public void update(Long id, JourneyDto journey) {
-        if (findById(id).isEmpty()) throw new EntityNotFoundException("Путешествие с id " + id + " не существует");
+    /**
+     * Updates an existing journey by ID.
+     *
+     * @param id      The ID of the journey to update.
+     * @param journey The updated JourneyDto data.
+     * @throws EntityNotFoundException If the journey
+     * with the specified ID is not found.
+     */
+    public void update(final Long id, final JourneyDto journey) {
+        if (findById(id).isEmpty()) {
+            throw new EntityNotFoundException(
+                "Путешествие с id " + id + " не существует");
+        }
         sessionFactory.inTransaction(session -> {
-            final MutationQuery query = session.createMutationQuery(CONST_UPDATE);
+            final MutationQuery query =
+                    session.createMutationQuery(CONST_UPDATE);
 
             query.setParameter("id", id);
             query.setParameter(CONST_COUNTRY, journey.getCountry());
             query.setParameter("town", journey.getTown());
             query.setParameter("dateToJourney", journey.getDateToJourney());
-            query.setParameter("dateFromJourney", journey.getDateFromJourney());
-            query.setParameter("travel_agency_id", journey.getTravelAgency().getId());
+            query.setParameter("dateFromJourney",
+                    journey.getDateFromJourney());
+            query.setParameter("travel_agency_id",
+                    journey.getTravelAgency().getId());
             query.executeUpdate();
         });
     }
 
-    public List<Journey> findByTravelAgencyId(Long travelAgencyId) {
+    /**
+     * Retrieves a list of journeys by travel agency ID.
+     *
+     * @param travelAgencyId The ID of the travel agency
+     * to filter journeys by.
+     * @return A list of Journey entities
+     * associated with the specified travel agency ID.
+     */
+    public List<Journey> findByTravelAgencyId(final Long travelAgencyId) {
         return sessionFactory.fromSession(session -> {
             Query<Journey> query = session.createQuery(
-                    "FROM Journey J WHERE J.travelAgency.id = :travelAgencyId", Journey.class);
+                    "FROM Journey J WHERE J.travelAgency.id = "
+                            + ":travelAgencyId", Journey.class);
             query.setParameter("travelAgencyId", travelAgencyId);
             return query.list();
         });
