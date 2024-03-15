@@ -4,6 +4,8 @@ import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.model.TravelAgencyDto;
 import by.baranova.javajourney.service.AgencyService;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,17 +30,18 @@ public class TravelAgencyController {
      */
     private final AgencyService agencyService;
 
+    static final Logger LOGGER = LogManager
+            .getLogger(TravelAgencyController.class);
 
     /**
      * Retrieves a Travel Agency by its ID.
      *
      * @param id The ID of the Travel Agency to retrieve.
      * @return The Travel Agency with the specified ID.
-     * @throws InterruptedException Thrown if there
-     * is an interruption while waiting for the result.
      */
     @GetMapping("/{id}")
     public TravelAgency getTravelAgencyById(final @PathVariable Long id) {
+        LOGGER.info("Display Travel Agencies by id");
         return agencyService.findAgencyById(id);
     }
 
@@ -49,6 +52,7 @@ public class TravelAgencyController {
      */
     @GetMapping("/all")
     public List<TravelAgency> getAllTravelAgenciesWithJourneys() {
+        LOGGER.info("Display Travel Agencies");
         return agencyService.findAgencies();
     }
 
@@ -62,6 +66,7 @@ public class TravelAgencyController {
     public String createTravelAgency(
            final @RequestBody TravelAgency newTravelAgency) {
         agencyService.save(newTravelAgency);
+        LOGGER.info("Create Travel Agencies");
         return "Successfully created a new agency";
     }
 
@@ -74,6 +79,7 @@ public class TravelAgencyController {
     @DeleteMapping("/{id}")
     public String deleteTravelAgencyById(final @PathVariable Long id) {
         agencyService.deleteById(id);
+        LOGGER.info("Delete Travel Agencies by id");
         return "Successfully deleted the agency with id: " + id;
     }
 
@@ -89,6 +95,7 @@ public class TravelAgencyController {
                                     final @RequestBody TravelAgencyDto
                                              travelAgency) {
         agencyService.update(id, travelAgency);
+        LOGGER.info("Update Travel Agencies by id");
         return "Successfully updated journey with id " + id;
     }
 }

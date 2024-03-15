@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public class JourneyController {
      * The service responsible for managing journeys.
      */
     private final JourneyService journeyService;
-
+    static final Logger LOGGER = LogManager.getLogger(JourneyController.class);
 
     /**
      * Retrieves a list of journeys based on the provided country parameter.
@@ -37,10 +39,13 @@ public class JourneyController {
      */
     @GetMapping
     public List<JourneyDto> findJourneys(final @RequestParam(name =
-            "country", required = false) String country) throws InterruptedException {
+            "country", required = false) String country)
+            throws InterruptedException {
         if (country != null) {
+            LOGGER.info("Display Journeys by country");
             return journeyService.findJourneysByCountry(country);
         } else {
+            LOGGER.info("Display all Journeys");
             return journeyService.findJourneys();
         }
     }
@@ -53,8 +58,9 @@ public class JourneyController {
      * @throws InterruptedException If the thread is interrupted while waiting.
      */
     @GetMapping("/{id}")
-    public JourneyDto findJourney(final @PathVariable("id")
-                                  Long id) throws InterruptedException {
+    public JourneyDto findJourney(final @PathVariable("id") Long id)
+            throws InterruptedException {
+        LOGGER.info("Display Journey by id");
         return journeyService.findJourneyById(id);
     }
 
@@ -69,6 +75,7 @@ public class JourneyController {
     public String handleJourneyDeleteByCountry(final @RequestParam(name =
             "country") String country) {
         journeyService.deleteByCountry(country);
+        LOGGER.info("Delete Journey by Country");
         return "Successfully deleted journeys in " + country;
     }
 
@@ -82,6 +89,7 @@ public class JourneyController {
     public String handleJourneyCreation(final @Valid
                                             @RequestBody JourneyDto journey) {
         journeyService.save(journey);
+        LOGGER.info("Create Journey");
         return "Successfully created a new journey";
     }
 
@@ -98,6 +106,7 @@ public class JourneyController {
                                      final @Valid @RequestBody
                                      JourneyDto journey) {
         journeyService.update(id, journey);
+        LOGGER.info("Update Journey");
         return "Successfully updated journey with id " + id;
     }
 
@@ -111,6 +120,7 @@ public class JourneyController {
     @DeleteMapping("/{id}")
     public String handleJourneyDelete(final @PathVariable Long id) {
         journeyService.deleteById(id);
+        LOGGER.info("Delete Journey by id");
         return "Successfully deleted journey with id " + id;
     }
 }
