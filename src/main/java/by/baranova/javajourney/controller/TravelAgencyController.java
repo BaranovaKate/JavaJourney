@@ -51,7 +51,7 @@ public class TravelAgencyController {
      * @return A list of all Travel Agencies with their associated Journeys.
      */
     @GetMapping("/all")
-    public List<TravelAgency> getAllTravelAgenciesWithJourneys() {
+    public List<TravelAgency> getAllTravelAgenciesWithJourneys(){
         LOGGER.info("Display Travel Agencies");
         return agencyService.findAgencies();
     }

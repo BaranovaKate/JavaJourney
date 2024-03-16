@@ -1,5 +1,6 @@
 package by.baranova.javajourney.service;
 
+import by.baranova.javajourney.cache.Cache;
 import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.TravelAgency;
@@ -26,6 +27,8 @@ public class AgencyService {
      */
     private final JourneyRepository journeyRepository;
 
+    private final Cache cache;
+
     /**
      * Retrieves a list of all travel agencies
      * along with their associated journeys.
@@ -33,7 +36,12 @@ public class AgencyService {
      * @return A list of TravelAgency entities.
      */
     public List<TravelAgency> findAgencies() {
-        return travelAgencyRepository.findAllWithJourneys();
+        List<TravelAgency> agencies = (List<TravelAgency>) cache.get("agencies");
+        if (agencies == null) {
+            agencies = travelAgencyRepository.findAllWithJourneys();
+            cache.put("agencies", agencies);
+        }
+        return agencies;
     }
 
     /**
@@ -43,7 +51,12 @@ public class AgencyService {
      * @return The TravelAgency entity.
      */
     public TravelAgency findAgencyById(final Long id) {
-        return travelAgencyRepository.findById(id);
+        TravelAgency agency = (TravelAgency) cache.get("agency_" + id);
+        if (agency == null) {
+            agency = travelAgencyRepository.findById(id);
+            cache.put("agency_" + id, agency);
+        }
+        return agency;
     }
 
     /**
@@ -53,6 +66,7 @@ public class AgencyService {
      */
     public void save(final TravelAgency travelAgency) {
         travelAgencyRepository.save(travelAgency);
+        cache.clear();
     }
 
     /**
@@ -63,18 +77,17 @@ public class AgencyService {
      *                                 with the specified ID is not found.
      */
     public void deleteById(final Long id) {
-        TravelAgency agencyToDelete = travelAgencyRepository.findById(id);
+        TravelAgency agencyToDelete = findAgencyById(id);
 
         if (agencyToDelete == null) {
             throw new EntityNotFoundException("Агентство с id "
                     + id + " не найдено");
         }
-        List<Journey> journeysWithAgency =
-                journeyRepository.findByTravelAgencyId(id);
-        journeysWithAgency.forEach(journey ->
-                journeyRepository.deleteById(journey.getId()));
+        List<Journey> journeysWithAgency = journeyRepository.findByTravelAgencyId(id);
+        journeysWithAgency.forEach(journey -> journeyRepository.deleteById(journey.getId()));
 
         travelAgencyRepository.deleteById(id);
+        cache.clear();
     }
 
     /**
@@ -85,5 +98,6 @@ public class AgencyService {
      */
     public void update(final Long id, final TravelAgencyDto updatedAgency) {
         travelAgencyRepository.update(id, updatedAgency);
+        cache.clear();
     }
 }
