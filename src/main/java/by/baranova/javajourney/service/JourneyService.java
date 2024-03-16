@@ -4,6 +4,8 @@ import by.baranova.javajourney.cache.Cache;
 import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,9 +19,11 @@ public class JourneyService {
 
     private final JourneyRepository journeyRepository;
     private final Cache cache;
+    static final Logger LOGGER = LogManager.getLogger(JourneyService.class);
 
     public List<JourneyDto> findJourneys() throws InterruptedException {
         List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys");
+        LOGGER.info("Display Journeys from cache");
         if (journeys == null) {
             TimeUnit.SECONDS.sleep(3L);
             journeys = journeyRepository.findAll();
@@ -30,6 +34,7 @@ public class JourneyService {
 
     public JourneyDto findJourneyById(Long id) throws InterruptedException {
         JourneyDto journey = (JourneyDto) cache.get("journey_" + id);
+        LOGGER.info("Display Journey from cache");
         if (journey == null) {
             journey = journeyRepository.findById(id).orElse(null);
             cache.put("journey_" + id, journey);
@@ -44,6 +49,7 @@ public class JourneyService {
 
     public List<JourneyDto> findJourneysByCountry(String country) {
         List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys_" + country);
+        LOGGER.info("Display Journeys from cache");
         if (journeys == null) {
             journeys = journeyRepository.findByCountry(country);
             cache.put("journeys_" + country, journeys);

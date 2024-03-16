@@ -50,8 +50,8 @@ public class TravelAgencyRepository {
      */
     public List<TravelAgency> findAllWithJourneys() {
         return sessionFactory.fromSession(session -> {
-            Query<TravelAgency> query = session.createQuery("""
-                            FROM TravelAgency J LEFT JOIN FETCH J.journeys""",
+            Query<TravelAgency> query = session
+                    .createQuery("FROM TravelAgency J LEFT JOIN FETCH J.journeys",
                     TravelAgency.class);
             return query.list();
         });
@@ -79,8 +79,8 @@ public class TravelAgencyRepository {
                     "Агентство с id " + id + " не найдено");
         }
         sessionFactory.inTransaction(session -> {
-            final MutationQuery query = session.createMutationQuery("""
-                    DELETE FROM TravelAgency WHERE id = :id""");
+            final MutationQuery query = session
+                    .createMutationQuery("DELETE FROM TravelAgency WHERE id = :id");
             query.setParameter("id", id);
             query.executeUpdate();
         });
