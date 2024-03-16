@@ -21,16 +21,33 @@ public class JourneyService {
     private final Cache cache;
     static final Logger LOGGER = LogManager.getLogger(JourneyService.class);
 
-    public List<JourneyDto> findJourneys() throws InterruptedException {
+
+    public List<JourneyDto> findJourneys() {
         List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys");
         LOGGER.info("Display Journeys from cache");
         if (journeys == null) {
-            TimeUnit.SECONDS.sleep(3L);
+            try {
+                TimeUnit.SECONDS.sleep(3L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.error("InterruptedException occurred", e);
+            }
             journeys = journeyRepository.findAll();
             cache.put("journeys", journeys);
         }
         return journeys;
     }
+
+//    public List<JourneyDto> findJourneys() throws InterruptedException {
+//        List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys");
+//        LOGGER.info("Display Journeys from cache");
+//        if (journeys == null) {
+//            TimeUnit.SECONDS.sleep(3L);
+//            journeys = journeyRepository.findAll();
+//            cache.put("journeys", journeys);
+//        }
+//        return journeys;
+//    }
 
     public JourneyDto findJourneyById(Long id) throws InterruptedException {
         JourneyDto journey = (JourneyDto) cache.get("journey_" + id);
