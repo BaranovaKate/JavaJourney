@@ -39,7 +39,7 @@ public class JourneyController {
      */
     @GetMapping
     public List<JourneyDto> findJourneys(final @RequestParam(name =
-            "country", required = false) String country) {
+            "country", required = false) String country) throws InterruptedException {
         if (country != null) {
             LOGGER.info("Display Journeys by country");
             return journeyService.findJourneysByCountry(country);
