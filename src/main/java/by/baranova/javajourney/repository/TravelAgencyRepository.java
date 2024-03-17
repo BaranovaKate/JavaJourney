@@ -1,6 +1,5 @@
 package by.baranova.javajourney.repository;
 
-//import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.model.TravelAgencyDto;
 import jakarta.persistence.EntityNotFoundException;
