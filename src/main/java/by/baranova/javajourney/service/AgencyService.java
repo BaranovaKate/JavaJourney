@@ -33,7 +33,7 @@ public class AgencyService {
 
     private final Cache cache;
 
-    static final Logger LOGGER = LogManager.getLogger(JourneyService.class);
+    static final Logger LOGGER = LogManager.getLogger(AgencyService.class);
     /**
      * Retrieves a travel agency by its ID.
      *
