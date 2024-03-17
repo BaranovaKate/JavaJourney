@@ -4,7 +4,6 @@ import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.model.TravelAgencyDto;
 import org.springframework.stereotype.Component;
 
-
 /**
  * Mapper class for converting between
  * {@link TravelAgency} and {@link TravelAgencyDto}.

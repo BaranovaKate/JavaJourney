@@ -19,27 +19,18 @@ import java.util.concurrent.TimeUnit;
 public class JourneyService {
 
     private final JourneyRepository journeyRepository;
+
     private final Cache cache;
     static final Logger LOGGER = LogManager.getLogger(JourneyService.class);
 
-    public List<JourneyDto> findJourneys() throws InterruptedException {
-        List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys");
-        LOGGER.info("Display Journeys from cache");
-        if (journeys == null) {
-            TimeUnit.SECONDS.sleep(3L);
-            journeys = journeyRepository.findAll();
-            cache.put("journeys", journeys);
-        }
-        return journeys;
-    }
-
     public JourneyDto findJourneyById(Long id) {
         JourneyDto journey = (JourneyDto) cache.get("journey_" + id);
-        LOGGER.info("Display Journey from cache");
         if (journey == null) {
             journey = journeyRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Путешествие с ID " + id + " не найдено"));
             cache.put("journey_" + id, journey);
+        }else {
+            LOGGER.info("Display Journey from cache");
         }
         return journey;
     }
@@ -49,21 +40,35 @@ public class JourneyService {
         cache.clear();
     }
 
-    public List<JourneyDto> findJourneysByCountry(String country) {
-        List<JourneyDto> journeys = (List<JourneyDto>) cache
-                .get("journeys_" + country);
-        LOGGER.info("Display Journeys from cache");
-        if (journeys == null) {
-            journeys = journeyRepository.findByCountry(country);
-            cache.put("journeys_" + country, journeys);
-        }
-        return journeys;
-    }
-
     public void deleteByCountry(String country) {
         journeyRepository.deleteByCountry(country);
         cache.clear();
     }
+
+    public List<JourneyDto> findJourneys() throws InterruptedException {
+        List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys");
+        if (journeys == null) {
+            TimeUnit.SECONDS.sleep(3L);
+            journeys = journeyRepository.findAll();
+            cache.put("journeys", journeys);
+        }else{
+            LOGGER.info("Display Journeys from cache");
+        }
+        return journeys;
+    }
+
+    public List<JourneyDto> findJourneysByCountry(String country) {
+        List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys_" + country);
+        if (journeys == null) {
+            journeys = journeyRepository.findByCountry(country);
+            cache.put("journeys_" + country, journeys);
+        }else {
+            LOGGER.info("Display Journeys from cache");
+        }
+        return journeys;
+    }
+
+
 
     public void save(JourneyDto journeyDto) {
         journeyRepository.save(journeyDto);

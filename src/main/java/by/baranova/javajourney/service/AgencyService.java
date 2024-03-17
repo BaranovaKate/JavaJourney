@@ -8,6 +8,8 @@ import by.baranova.javajourney.repository.JourneyRepository;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
 /**
  * Service class for managing TravelAgency entities.
  */
+
+
 @AllArgsConstructor
 @Service
 public class AgencyService {
@@ -29,33 +33,21 @@ public class AgencyService {
 
     private final Cache cache;
 
-    /**
-     * Retrieves a list of all travel agencies
-     * along with their associated journeys.
-     *
-     * @return A list of TravelAgency entities.
-     */
-    public List<TravelAgency> findAgencies() {
-        List<TravelAgency> agencies = (List<TravelAgency>) cache
-                .get("agencies");
-        if (agencies == null) {
-            agencies = travelAgencyRepository.findAllWithJourneys();
-            cache.put("agencies", agencies);
-        }
-        return agencies;
-    }
-
+    static final Logger LOGGER = LogManager.getLogger(JourneyService.class);
     /**
      * Retrieves a travel agency by its ID.
      *
      * @param id The ID of the travel agency to retrieve.
      * @return The TravelAgency entity.
      */
+
     public TravelAgency findAgencyById(final Long id) {
         TravelAgency agency = (TravelAgency) cache.get("agency_" + id);
         if (agency == null) {
             agency = travelAgencyRepository.findById(id);
             cache.put("agency_" + id, agency);
+        }else {
+            LOGGER.info("Display agency from cache");
         }
         return agency;
     }
@@ -90,6 +82,23 @@ public class AgencyService {
 
         travelAgencyRepository.deleteById(id);
         cache.clear();
+    }
+
+    /**
+     * Retrieves a list of all travel agencies
+     * along with their associated journeys.
+     *
+     * @return A list of TravelAgency entities.
+     */
+    public List<TravelAgency> findAgencies() {
+        List<TravelAgency> agencies = (List<TravelAgency>) cache.get("agencies");
+        if (agencies == null) {
+            agencies = travelAgencyRepository.findAllWithJourneys();
+            cache.put("agencies", agencies);
+        }else {
+            LOGGER.info("Display Agencies from cache");
+        }
+        return agencies;
     }
 
     /**

@@ -9,8 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Cache {
     private Map<String, Object> hashMap = new ConcurrentHashMap<>();
 
+    private static final int MAX_SIZE = 100;
+
     public void put(String key, Object value) {
         hashMap.put(key, value);
+        if (hashMap.size() >= MAX_SIZE)
+            hashMap.clear();
     }
 
     public Object get(String key) {
