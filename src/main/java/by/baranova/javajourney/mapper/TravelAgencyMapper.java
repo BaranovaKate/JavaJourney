@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class TravelAgencyMapper {
+public final class TravelAgencyMapper {
 
     /**
      * Converts a {@link TravelAgency}

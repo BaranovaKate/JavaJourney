@@ -10,9 +10,11 @@ import java.io.Serializable;
 @Data
 public class TravelAgencyDto implements Serializable {
 
+    /** The unique identifier of the travel agency. */
     @NotNull
     private Long id;
 
+    /** The name of the travel agency. */
     @NotNull
     private String name;
 

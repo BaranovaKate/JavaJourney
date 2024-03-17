@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
 /**
  * Repository class for handling CRUD operations related to Journey entities.
  */
@@ -20,9 +19,16 @@ import java.util.Optional;
 @Repository
 public class JourneyRepository {
 
+    /** The Hibernate SessionFactory for database interactions. */
     private final SessionFactory sessionFactory;
+
+    /** The mapper to convert between Journey and JourneyDto. */
     private final JourneyMapper journeyMapper;
+
+    /** Constant for the country field. */
     private static final String CONST_COUNTRY = "country";
+
+    /** Constant for the UPDATE query. */
     private static final String CONST_UPDATE = """
             UPDATE Journey J SET
                J.country = :country,
@@ -75,7 +81,7 @@ public class JourneyRepository {
     public void deleteById(final Long id) {
         if (findById(id).isEmpty()) {
             throw new EntityNotFoundException(
-                    "Путешествие с id " + id + " не найдено");
+                    "Journey with id " + id + " not found");
         }
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
@@ -119,7 +125,7 @@ public class JourneyRepository {
     public void deleteByCountry(final String country) {
         if (findByCountry(country).isEmpty()) {
             throw new EntityNotFoundException(
-                    "Путешествие в " + country + " не существует");
+                    "Journey in " + country + " does not exist");
         }
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session.createMutationQuery("""
@@ -152,7 +158,7 @@ public class JourneyRepository {
     public void update(final Long id, final JourneyDto journey) {
         if (findById(id).isEmpty()) {
             throw new EntityNotFoundException(
-                "Путешествие с id " + id + " не существует");
+                    "Journey with id " + id + " does not exist");
         }
         sessionFactory.inTransaction(session -> {
             final MutationQuery query =

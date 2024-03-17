@@ -20,6 +20,9 @@ import java.util.List;
 @Repository
 public class TravelAgencyRepository {
 
+    /**
+     * The Hibernate SessionFactory for database interactions.
+     */
     private final SessionFactory sessionFactory;
 
     /**
@@ -51,8 +54,9 @@ public class TravelAgencyRepository {
     public List<TravelAgency> findAllWithJourneys() {
         return sessionFactory.fromSession(session -> {
             Query<TravelAgency> query = session
-                    .createQuery("FROM TravelAgency J LEFT JOIN FETCH J.journeys",
-                    TravelAgency.class);
+                    .createQuery(
+                            "FROM TravelAgency J LEFT JOIN FETCH J.journeys",
+                            TravelAgency.class);
             return query.list();
         });
     }
@@ -83,12 +87,12 @@ public class TravelAgencyRepository {
 
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session
-                    .createMutationQuery("DELETE FROM TravelAgency WHERE id = :id");
+                    .createMutationQuery(
+                            "DELETE FROM TravelAgency WHERE id = :id");
             query.setParameter("id", id);
             query.executeUpdate();
         });
     }
-
 
 
     /**

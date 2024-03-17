@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class JourneyMapper {
-
+    /** Repository for travel Agencies.
+     */
     private final TravelAgencyRepository travelAgencyRepository;
 
     /**
