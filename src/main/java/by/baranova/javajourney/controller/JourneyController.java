@@ -46,7 +46,7 @@ public class JourneyController {
             JourneyDto journey = journeyService.findJourneyById(id);
             return ResponseEntity.ok(journey);
         } catch (EntityNotFoundException e) {
-            LOGGER.error("404 Not Found:  %s " + e.getMessage());
+            LOGGER.error("404 Not Found: {} ",  e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -75,7 +75,7 @@ public class JourneyController {
             LOGGER.info("Update Journey");
             return ResponseEntity.ok("Successfully updated journey with id " + id);
         } catch (EntityNotFoundException e) {
-            LOGGER.error("404 Not Found: %s " + e.getMessage());
+            LOGGER.error("404 Not Found: {} ",  e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -87,7 +87,7 @@ public class JourneyController {
             LOGGER.info("Delete Journey by id");
             return ResponseEntity.ok("Successfully deleted journey with id " + id);
         } catch (EntityNotFoundException e) {
-            LOGGER.error("404 Not Found: %s " + e.getMessage());
+            LOGGER.error("404 Not Found: {} ",  e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
