@@ -3,6 +3,7 @@ package by.baranova.javajourney.service;
 import by.baranova.javajourney.cache.Cache;
 import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,11 +33,12 @@ public class JourneyService {
         return journeys;
     }
 
-    public JourneyDto findJourneyById(Long id){
+    public JourneyDto findJourneyById(Long id) {
         JourneyDto journey = (JourneyDto) cache.get("journey_" + id);
         LOGGER.info("Display Journey from cache");
         if (journey == null) {
-            journey = journeyRepository.findById(id).orElse(null);
+            journey = journeyRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Путешествие с ID " + id + " не найдено"));
             cache.put("journey_" + id, journey);
         }
         return journey;
@@ -48,7 +50,8 @@ public class JourneyService {
     }
 
     public List<JourneyDto> findJourneysByCountry(String country) {
-        List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys_" + country);
+        List<JourneyDto> journeys = (List<JourneyDto>) cache
+                .get("journeys_" + country);
         LOGGER.info("Display Journeys from cache");
         if (journeys == null) {
             journeys = journeyRepository.findByCountry(country);

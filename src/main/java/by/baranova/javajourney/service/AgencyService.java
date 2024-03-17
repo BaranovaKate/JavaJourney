@@ -1,12 +1,13 @@
 package by.baranova.javajourney.service;
 
 import by.baranova.javajourney.cache.Cache;
-import by.baranova.javajourney.exception.EntityNotFoundException;
+//import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.model.TravelAgencyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,8 @@ public class AgencyService {
      * @return A list of TravelAgency entities.
      */
     public List<TravelAgency> findAgencies() {
-        List<TravelAgency> agencies = (List<TravelAgency>) cache.get("agencies");
+        List<TravelAgency> agencies = (List<TravelAgency>) cache
+                .get("agencies");
         if (agencies == null) {
             agencies = travelAgencyRepository.findAllWithJourneys();
             cache.put("agencies", agencies);
@@ -78,13 +80,14 @@ public class AgencyService {
      */
     public void deleteById(final Long id) {
         TravelAgency agencyToDelete = findAgencyById(id);
-
         if (agencyToDelete == null) {
             throw new EntityNotFoundException("Агентство с id "
                     + id + " не найдено");
         }
-        List<Journey> journeysWithAgency = journeyRepository.findByTravelAgencyId(id);
-        journeysWithAgency.forEach(journey -> journeyRepository.deleteById(journey.getId()));
+        List<Journey> journeysWithAgency = journeyRepository
+                .findByTravelAgencyId(id);
+        journeysWithAgency.forEach(journey -> journeyRepository
+                .deleteById(journey.getId()));
 
         travelAgencyRepository.deleteById(id);
         cache.clear();

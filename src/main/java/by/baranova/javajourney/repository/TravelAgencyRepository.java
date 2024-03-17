@@ -1,8 +1,9 @@
 package by.baranova.javajourney.repository;
 
-import by.baranova.javajourney.exception.EntityNotFoundException;
+//import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.model.TravelAgencyDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.MutationQuery;
@@ -73,11 +74,14 @@ public class TravelAgencyRepository {
      * @throws EntityNotFoundException If the travel agency
      *                                 with the specified ID is not found.
      */
+
     public void deleteById(final Long id) {
-        if (findById(id) == null) {
+        TravelAgency agencyToDelete = findById(id);
+        if (agencyToDelete == null) {
             throw new EntityNotFoundException(
                     "Агентство с id " + id + " не найдено");
         }
+
         sessionFactory.inTransaction(session -> {
             final MutationQuery query = session
                     .createMutationQuery("DELETE FROM TravelAgency WHERE id = :id");
@@ -85,6 +89,8 @@ public class TravelAgencyRepository {
             query.executeUpdate();
         });
     }
+
+
 
     /**
      * Updates a travel agency's information based

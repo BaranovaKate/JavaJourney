@@ -1,9 +1,10 @@
 package by.baranova.javajourney.repository;
 
-import by.baranova.javajourney.exception.EntityNotFoundException;
+//import by.baranova.javajourney.exception.EntityNotFoundException;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.mapper.JourneyMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.MutationQuery;

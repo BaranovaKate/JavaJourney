@@ -1,8 +1,11 @@
 package by.baranova.javajourney.controller;
 import by.baranova.javajourney.model.JourneyDto;
 import by.baranova.javajourney.service.JourneyService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,27 +19,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.List;
 
-/**
- * The JourneyController class handles HTTP requests related to journeys.
- */
 @RestController
 @RequestMapping("/journeys")
 @AllArgsConstructor
 public class JourneyController {
 
-    /**
-     * The service responsible for managing journeys.
-     */
     private final JourneyService journeyService;
     static final Logger LOGGER = LogManager.getLogger(JourneyController.class);
 
-    /**
-     * Retrieves a list of journeys based on the provided country parameter.
-     *
-     * @param country The country parameter to filter journeys (optional).
-     * @return A list of journeys based on the provided country
-     * or all journeys if country is null.
-     */
     @GetMapping
     public List<JourneyDto> findJourneys(final @RequestParam(name =
             "country", required = false) String country) throws InterruptedException {
@@ -49,27 +39,18 @@ public class JourneyController {
         }
     }
 
-    /**
-     * Retrieves a specific journey by its ID.
-     *
-     * @param id The ID of the journey to retrieve.
-     * @return The journey with the specified ID.
-     * @throws InterruptedException If the thread is interrupted while waiting.
-     */
     @GetMapping("/{id}")
-    public JourneyDto findJourney(final @PathVariable("id") Long id)
-            throws InterruptedException {
-        LOGGER.info("Display Journey by id");
-        return journeyService.findJourneyById(id);
+    public ResponseEntity<JourneyDto> findJourney(final @PathVariable("id") Long id) {
+        try {
+            LOGGER.info("Display Journey by id");
+            JourneyDto journey = journeyService.findJourneyById(id);
+            return ResponseEntity.ok(journey);
+        } catch (EntityNotFoundException e) {
+            LOGGER.error("404 Not Found: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
-    /**
-     * Deletes journeys based on the provided country.
-     *
-     * @param country The country parameter to identify journeys for deletion.
-     * @return A message indicating the successful
-     * deletion of journeys in the specified country.
-     */
     @DeleteMapping("/delete")
     public String handleJourneyDeleteByCountry(final @RequestParam(name =
             "country") String country) {
@@ -78,12 +59,6 @@ public class JourneyController {
         return "Successfully deleted journeys in " + country;
     }
 
-    /**
-     * Creates a new journey based on the provided journey data.
-     *
-     * @param journey The journey data for creating a new journey.
-     * @return A message indicating the successful creation of a new journey.
-     */
     @PostMapping("/new")
     public String handleJourneyCreation(final @Valid
                                             @RequestBody JourneyDto journey) {
@@ -92,34 +67,28 @@ public class JourneyController {
         return "Successfully created a new journey";
     }
 
-    /**
-     * Updates an existing journey with the provided journey data.
-     *
-     * @param id      The ID of the journey to update.
-     * @param journey The journey data for updating the existing journey.
-     * @return A message indicating the successful update
-     * of the journey with the specified ID.
-     */
     @PutMapping("/{id}")
-    public String handleJourneyUpdate(final @PathVariable Long id,
-                                     final @Valid @RequestBody
-                                     JourneyDto journey) {
-        journeyService.update(id, journey);
-        LOGGER.info("Update Journey");
-        return "Successfully updated journey with id " + id;
+    public ResponseEntity<String> handleJourneyUpdate(final @PathVariable Long id,
+                                                      final @Valid @RequestBody JourneyDto journey) {
+        try {
+            journeyService.update(id, journey);
+            LOGGER.info("Update Journey");
+            return ResponseEntity.ok("Successfully updated journey with id " + id);
+        } catch (EntityNotFoundException e) {
+            LOGGER.error("404 Not Found: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
-    /**
-     * Deletes a specific journey by its ID.
-     *
-     * @param id The ID of the journey to delete.
-     * @return A message indicating the successful deletion
-     * of the journey with the specified ID.
-     */
     @DeleteMapping("/{id}")
-    public String handleJourneyDelete(final @PathVariable Long id) {
-        journeyService.deleteById(id);
-        LOGGER.info("Delete Journey by id");
-        return "Successfully deleted journey with id " + id;
+    public ResponseEntity<String> handleJourneyDelete(final @PathVariable Long id) {
+        try {
+            journeyService.deleteById(id);
+            LOGGER.info("Delete Journey by id");
+            return ResponseEntity.ok("Successfully deleted journey with id " + id);
+        } catch (EntityNotFoundException e) {
+            LOGGER.error("404 Not Found: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
