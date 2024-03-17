@@ -1,6 +1,6 @@
 package by.baranova.javajourney.mapper;
 import by.baranova.javajourney.model.Journey;
-import by.baranova.javajourney.model.JourneyDto;
+import by.baranova.javajourney.dto.JourneyDto;
 import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import lombok.AllArgsConstructor;

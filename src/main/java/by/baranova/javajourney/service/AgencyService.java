@@ -3,7 +3,7 @@ package by.baranova.javajourney.service;
 import by.baranova.javajourney.cache.Cache;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.TravelAgency;
-import by.baranova.javajourney.model.TravelAgencyDto;
+import by.baranova.javajourney.dto.TravelAgencyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import jakarta.persistence.EntityNotFoundException;

@@ -1,7 +1,7 @@
 package by.baranova.javajourney.mapper;
 
 import by.baranova.javajourney.model.TravelAgency;
-import by.baranova.javajourney.model.TravelAgencyDto;
+import by.baranova.javajourney.dto.TravelAgencyDto;
 import org.springframework.stereotype.Component;
 
 /**

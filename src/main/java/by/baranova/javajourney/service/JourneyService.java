@@ -1,7 +1,7 @@
 package by.baranova.javajourney.service;
 
 import by.baranova.javajourney.cache.Cache;
-import by.baranova.javajourney.model.JourneyDto;
+import by.baranova.javajourney.dto.JourneyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;

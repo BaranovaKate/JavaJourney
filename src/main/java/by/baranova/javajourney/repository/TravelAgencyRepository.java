@@ -1,7 +1,7 @@
 package by.baranova.javajourney.repository;
 
 import by.baranova.javajourney.model.TravelAgency;
-import by.baranova.javajourney.model.TravelAgencyDto;
+import by.baranova.javajourney.dto.TravelAgencyDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.hibernate.SessionFactory;

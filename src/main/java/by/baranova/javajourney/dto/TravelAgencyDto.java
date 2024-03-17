@@ -1,4 +1,4 @@
-package by.baranova.javajourney.model;
+package by.baranova.javajourney.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.io.Serializable;

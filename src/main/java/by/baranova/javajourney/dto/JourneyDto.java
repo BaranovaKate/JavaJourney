@@ -1,4 +1,4 @@
-package by.baranova.javajourney.model;
+package by.baranova.javajourney.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
