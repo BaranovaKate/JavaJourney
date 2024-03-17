@@ -94,4 +94,4 @@ Framework, а так же с использованием PostgreSQL. Прило
 ## Результаты SonarCloud
 
 По этой ссылке можно посмотреть результаты SonarCloud:
-https://sonarcloud.io/project/overview?id=BaranovaKate_JourneyJava
+https://sonarcloud.io/project/overview?id=BaranovaKate_JavaJourney
