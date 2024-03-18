@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
         for (FieldError fieldError : fieldErrors) {
             errorMessage.append(fieldError.getDefaultMessage()).append("; ");
         }
-        LOGGER.error("400 Bad Request: {}", errorMessage != null ? errorMessage.toString() : "Error message is null");
+        LOGGER.error("400 Bad Request: {}", errorMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(errorMessage.toString());
     }
