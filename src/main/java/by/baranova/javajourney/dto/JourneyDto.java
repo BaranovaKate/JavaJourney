@@ -11,6 +11,7 @@ import java.time.LocalDate;
  * Data Transfer Object (DTO) representing a journey.
  * Used for transferring journey data between layers of the application.
  */
+
 @Data
 public class JourneyDto implements Serializable {
 

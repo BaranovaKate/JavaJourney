@@ -1,4 +1,5 @@
 package by.baranova.javajourney.cache;
+
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import java.util.Map;
@@ -14,9 +15,6 @@ public class Cache {
     /** Storage for cache data. */
     private Map<String, Object> hashMap = new ConcurrentHashMap<>();
 
-    /** Maximum size of the cache. */
-    private static final int MAX_SIZE = 100;
-
     /**
      * Adds a value to the cache with the specified key.
      * If the cache reaches its maximum size, it clears.
@@ -26,9 +24,6 @@ public class Cache {
      */
     public void put(final String key, final Object value) {
         hashMap.put(key, value);
-        if (hashMap.size() >= MAX_SIZE) {
-            hashMap.clear();
-        }
     }
 
     /**
