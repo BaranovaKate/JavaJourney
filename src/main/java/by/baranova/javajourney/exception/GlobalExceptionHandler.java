@@ -40,8 +40,22 @@ public class GlobalExceptionHandler {
                 .body("400 Bad Request");
     }
 
+    /**
+     * Exception handler for cases when method arguments fail validation.
+     * Extracts the list of field errors from the provided
+     * exception and constructs an error message.
+     * Logs the error message and returns a response
+     * with status code 400 (Bad Request)
+     * and the constructed error message.
+     *
+     * @param ex the MethodArgumentNotValidException exception
+     *          that occurs when method arguments are invalid
+     * @return a ResponseEntity object with status code
+     * 400 (Bad Request) and the error message
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(
+           final MethodArgumentNotValidException ex) {
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
         StringBuilder errorMessage = new StringBuilder();
         for (FieldError fieldError : fieldErrors) {
