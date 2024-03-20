@@ -58,7 +58,7 @@ public class JourneyController {
      */
     @GetMapping
     @Operation(
-            method = "GET",
+              method = "GET",
             summary = "Получить список всех путешествий",
             description = "Выводит список всех путешествий. "
                     + "Так же выполняет поиск по стране"
@@ -171,14 +171,6 @@ public class JourneyController {
         }
     }
 
-
-
-
-
-
-
-
-
     @PostMapping("/new/bulk/{agency}")
     public ResponseEntity<String> createJourneysBulk(@RequestBody List<JourneyDto> journeyDtos,
                                                      @PathVariable("agency") String agency) {
@@ -194,14 +186,6 @@ public class JourneyController {
         }
     }
 
-
-
-
-
-
-
-
-
     /**
      * Handles deletion of a journey by its ID.
      *
@@ -210,10 +194,10 @@ public class JourneyController {
      */
     @DeleteMapping("/{id}")
     @Operation(
-            method = "GET",
-            summary = "Получить список тур агентств по id",
-            description = "Выводит список тур агентства по id,"
-                    + " содержащихся в базе данных"
+            method = "DELETE",
+            summary = "Удалить путешествие по id",
+            description = "Удаляет путешествие по id,"
+                    + " из базы данных"
     )
     public ResponseEntity<String> handleJourneyDelete(
             final @PathVariable Long id) {
