@@ -1,7 +1,6 @@
 package by.baranova.javajourney.controller;
 
 import by.baranova.javajourney.dto.JourneyDto;
-import by.baranova.javajourney.dto.TravelAgencyDto;
 import by.baranova.javajourney.service.JourneyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +22,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Controller class handling HTTP requests related to journeys.
@@ -92,7 +90,6 @@ public class JourneyController {
             description = "Выводит путешествие по id,"
                     + " содержащееся в базе данных"
     )
-
     public ResponseEntity<JourneyDto> findJourney(
             final @PathVariable("id") Long id) {
         try {

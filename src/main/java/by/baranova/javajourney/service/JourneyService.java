@@ -110,40 +110,6 @@ public class JourneyService {
         return journeys;
     }
 
-
-
-
-
-
-
-
-//
-//    public void createJourneysBulk(List<JourneyDto> journeyDtos, String agency) {
-//        if (journeyDtos == null || journeyDtos.isEmpty()) {
-//            throw new IllegalArgumentException("No journeys provided");
-//        }
-//        // Здесь можно добавить проверку существования туристического агентства
-//        // или другие необходимые проверки
-//
-//        List<String> errors = journeyDtos.stream()
-//                .map(journeyDto -> {
-//                    try {
-//                        save(journeyDto); // Используем ваш существующий метод сохранения
-//                        return null;
-//                    } catch (Exception e) {
-//                        return "Error creating journey: " + e.getMessage();
-//                    }
-//                })
-//                .filter(Objects::nonNull)
-//                .toList();
-//
-//        if (!errors.isEmpty()) {
-//            throw new IllegalArgumentException("Errors occurred during bulk creation:\n"
-//                    + String.join("\n", errors));
-//        }
-//    }
-
-
     public void createJourneysBulk(List<JourneyDto> journeyDtos, String agency) {
         if (journeyDtos == null || journeyDtos.isEmpty()) {
             throw new IllegalArgumentException("No journeys provided");
