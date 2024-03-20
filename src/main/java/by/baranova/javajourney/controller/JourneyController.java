@@ -1,6 +1,7 @@
 package by.baranova.javajourney.controller;
 
 import by.baranova.javajourney.dto.JourneyDto;
+import by.baranova.javajourney.dto.TravelAgencyDto;
 import by.baranova.javajourney.service.JourneyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Controller class handling HTTP requests related to journeys.
@@ -74,6 +76,8 @@ public class JourneyController {
             return journeyService.findJourneys();
         }
     }
+
+
 
     /**
      * Retrieves a journey by its ID.
@@ -139,6 +143,7 @@ public class JourneyController {
         return "Successfully created a new journey";
     }
 
+
     /**
      * Handles update of a journey.
      *
@@ -168,6 +173,37 @@ public class JourneyController {
                     .body(e.getMessage());
         }
     }
+
+
+
+
+
+
+
+
+
+    @PostMapping("/new/bulk/{agency}")
+    public ResponseEntity<String> createJourneysBulk(@RequestBody List<JourneyDto> journeyDtos,
+                                                     @PathVariable("agency") String agency) {
+        LOGGER.info("POST endpoint /journeys/new/bulk/{agency} was called");
+
+        try {
+            journeyService.createJourneysBulk(journeyDtos, agency);
+            return ResponseEntity.ok("Successfully created journeys in bulk for agency: " + agency);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
+        }
+    }
+
+
+
+
+
+
+
+
 
     /**
      * Handles deletion of a journey by its ID.

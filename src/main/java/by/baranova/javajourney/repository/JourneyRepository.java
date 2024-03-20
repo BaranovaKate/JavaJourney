@@ -1,5 +1,6 @@
 package by.baranova.javajourney.repository;
 
+import by.baranova.javajourney.dto.TravelAgencyDto;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.dto.JourneyDto;
 import by.baranova.javajourney.mapper.JourneyMapper;

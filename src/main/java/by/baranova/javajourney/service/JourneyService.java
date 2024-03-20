@@ -2,13 +2,17 @@ package by.baranova.javajourney.service;
 
 import by.baranova.javajourney.cache.Cache;
 import by.baranova.javajourney.dto.JourneyDto;
+import by.baranova.javajourney.dto.TravelAgencyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -104,6 +108,67 @@ public class JourneyService {
             LOGGER.info("Display Journeys from cache");
         }
         return journeys;
+    }
+
+
+
+
+
+
+
+
+//
+//    public void createJourneysBulk(List<JourneyDto> journeyDtos, String agency) {
+//        if (journeyDtos == null || journeyDtos.isEmpty()) {
+//            throw new IllegalArgumentException("No journeys provided");
+//        }
+//        // Здесь можно добавить проверку существования туристического агентства
+//        // или другие необходимые проверки
+//
+//        List<String> errors = journeyDtos.stream()
+//                .map(journeyDto -> {
+//                    try {
+//                        save(journeyDto); // Используем ваш существующий метод сохранения
+//                        return null;
+//                    } catch (Exception e) {
+//                        return "Error creating journey: " + e.getMessage();
+//                    }
+//                })
+//                .filter(Objects::nonNull)
+//                .toList();
+//
+//        if (!errors.isEmpty()) {
+//            throw new IllegalArgumentException("Errors occurred during bulk creation:\n"
+//                    + String.join("\n", errors));
+//        }
+//    }
+
+
+    public void createJourneysBulk(List<JourneyDto> journeyDtos, String agency) {
+        if (journeyDtos == null || journeyDtos.isEmpty()) {
+            throw new IllegalArgumentException("No journeys provided");
+        }
+        boolean agencyNameConflict = journeyDtos.stream()
+                .anyMatch(journeyDto -> !journeyDto.getTravelAgency().getName().equals(agency));
+        if (agencyNameConflict) {
+            throw new IllegalArgumentException("Agency name in URL does not match agency name in provided journey data");
+        }
+        List<String> errors = journeyDtos.stream()
+                .map(journeyDto -> {
+                    try {
+                        save(journeyDto); // Используем ваш существующий метод сохранения
+                        return null;
+                    } catch (Exception e) {
+                        return "Error creating journey: " + e.getMessage();
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
+
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException("Errors occurred during bulk creation:\n"
+                    + String.join("\n", errors));
+        }
     }
 
     /**
