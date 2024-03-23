@@ -35,7 +35,6 @@ public class AgencyService {
     }
 
     public void deleteById(final Long id) {
-      //  TravelAgency agencyToDelete = findAgencyById(id);
         List<Journey> journeysWithAgency = journeyRepository.findByTravelAgencyId(id);
         journeysWithAgency.forEach(journey -> journeyRepository.deleteById(journey.getId()));
         travelAgencyRepository.deleteById(id);

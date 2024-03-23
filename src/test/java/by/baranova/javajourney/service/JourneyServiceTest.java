@@ -40,7 +40,7 @@ class JourneyServiceTest {
     }
 
     @Test
-    public void testFindJourneyById_ExistingId() {
+    void testFindJourneyById_ExistingId() {
         Long id = 1L;
         JourneyDto expectedJourney = new JourneyDto();
         expectedJourney.setId(id);
@@ -54,7 +54,7 @@ class JourneyServiceTest {
     }
 
     @Test
-    public void testFindJourneyById_NonExistingId() {
+    void testFindJourneyById_NonExistingId() {
         Long id = 1L;
         when(cache.get("journey_" + id)).thenReturn(null);
         when(journeyRepository.findById(id)).thenReturn(Optional.empty());
@@ -160,7 +160,7 @@ class JourneyServiceTest {
 
 
     @Test
-    public void testUpdate() {
+    void testUpdate() {
 
         Long id = 1L;
         JourneyDto journeyDto = new JourneyDto();
