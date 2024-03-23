@@ -67,7 +67,7 @@ class JourneyControllerTest {
 
         // Assert
         assertEquals("Successfully created a new journey", result);
-        verify(journeyService, times(1)).save(eq(journeyDto));
+        verify(journeyService, times(1)).save(journeyDto);
     }
 
     @Test
@@ -75,7 +75,7 @@ class JourneyControllerTest {
         // Arrange
         List<JourneyDto> journeyDtos = new ArrayList<>();
         String agency = "Agency";
-        doNothing().when(journeyService).createJourneysBulk(eq(journeyDtos), eq(agency));
+        doNothing().when(journeyService).createJourneysBulk(journeyDtos, agency);
 
         // Act
         ResponseEntity<String> result = journeyController.createJourneysBulk(journeyDtos, agency);
@@ -83,7 +83,7 @@ class JourneyControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals("Successfully created journeys in bulk for agency: Agency", result.getBody());
-        verify(journeyService, times(1)).createJourneysBulk(eq(journeyDtos), eq(agency));
+        verify(journeyService, times(1)).createJourneysBulk(journeyDtos, agency);
     }
 
     @Test
@@ -91,7 +91,7 @@ class JourneyControllerTest {
         // Arrange
         Long id = 1L;
         JourneyDto journeyDto = new JourneyDto();
-        doNothing().when(journeyService).update(eq(id), eq(journeyDto));
+        doNothing().when(journeyService).update(id, journeyDto);
 
         // Act
         ResponseEntity<String> result = journeyController.handleJourneyUpdate(id, journeyDto);
@@ -99,14 +99,14 @@ class JourneyControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals("Successfully updated journey with id 1", result.getBody());
-        verify(journeyService, times(1)).update(eq(id), eq(journeyDto));
+        verify(journeyService, times(1)).update(id, journeyDto);
     }
 
     @Test
     void testHandleJourneyDelete_Success() {
         // Arrange
         Long id = 1L;
-        doNothing().when(journeyService).deleteById(eq(id));
+        doNothing().when(journeyService).deleteById(id);
 
         // Act
         ResponseEntity<String> result = journeyController.handleJourneyDelete(id);
@@ -114,7 +114,7 @@ class JourneyControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals("Successfully deleted journey with id 1", result.getBody());
-        verify(journeyService, times(1)).deleteById(eq(id));
+        verify(journeyService, times(1)).deleteById(id);
     }
 
     @Test
@@ -123,7 +123,7 @@ class JourneyControllerTest {
         List<JourneyDto> journeyDtos = new ArrayList<>();
         String agency = "Agency";
         String errorMessage = "Error occurred";
-        doThrow(new RuntimeException(errorMessage)).when(journeyService).createJourneysBulk(eq(journeyDtos), eq(agency));
+        doThrow(new RuntimeException(errorMessage)).when(journeyService).createJourneysBulk(journeyDtos, agency);
 
         // Act
         ResponseEntity<String> result = journeyController.createJourneysBulk(journeyDtos, agency);
@@ -131,7 +131,7 @@ class JourneyControllerTest {
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
         assertEquals("Error: " + errorMessage, result.getBody());
-        verify(journeyService, times(1)).createJourneysBulk(eq(journeyDtos), eq(agency));
+        verify(journeyService, times(1)).createJourneysBulk(journeyDtos, agency);
     }
 
     @Test
@@ -140,7 +140,7 @@ class JourneyControllerTest {
         Long id = 1L;
         JourneyDto journeyDto = new JourneyDto();
         String errorMessage = "Error occurred";
-        doThrow(new EntityNotFoundException(errorMessage)).when(journeyService).update(eq(id), eq(journeyDto));
+        doThrow(new EntityNotFoundException(errorMessage)).when(journeyService).update(id, journeyDto);
 
         // Act
         ResponseEntity<String> result = journeyController.handleJourneyUpdate(id, journeyDto);
@@ -148,7 +148,7 @@ class JourneyControllerTest {
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
         assertEquals(errorMessage, result.getBody());
-        verify(journeyService, times(1)).update(eq(id), eq(journeyDto));
+        verify(journeyService, times(1)).update(id, journeyDto);
     }
 
     @Test
@@ -156,7 +156,7 @@ class JourneyControllerTest {
         // Arrange
         Long id = 1L;
         String errorMessage = "Error occurred";
-        doThrow(new EntityNotFoundException(errorMessage)).when(journeyService).deleteById(eq(id));
+        doThrow(new EntityNotFoundException(errorMessage)).when(journeyService).deleteById(id);
 
         // Act
         ResponseEntity<String> result = journeyController.handleJourneyDelete(id);
@@ -164,6 +164,6 @@ class JourneyControllerTest {
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
         assertEquals(errorMessage, result.getBody());
-        verify(journeyService, times(1)).deleteById(eq(id));
+        verify(journeyService, times(1)).deleteById(id);
     }
 }
