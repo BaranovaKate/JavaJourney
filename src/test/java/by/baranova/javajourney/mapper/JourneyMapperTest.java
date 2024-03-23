@@ -1,0 +1,83 @@
+package by.baranova.javajourney.mapper;
+
+import by.baranova.javajourney.dto.TravelAgencyDto;
+import by.baranova.javajourney.model.Journey;
+import by.baranova.javajourney.dto.JourneyDto;
+import by.baranova.javajourney.model.TravelAgency;
+import by.baranova.javajourney.repository.TravelAgencyRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+class JourneyMapperTest {
+
+    private JourneyMapper journeyMapper;
+
+    @Mock
+    private TravelAgencyRepository travelAgencyRepository;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        journeyMapper = new JourneyMapper(travelAgencyRepository);
+    }
+
+    @Test
+    void testToDto() {
+        // Arrange
+        Journey journey = new Journey();
+        journey.setId(1L);
+        journey.setCountry("Country");
+        journey.setTown("Town");
+        journey.setDateToJourney(LocalDate.of(2024, 3, 10));
+        journey.setDateFromJourney(LocalDate.of(2024, 3, 5));
+        TravelAgency travelAgency = new TravelAgency();
+        travelAgency.setId(1L);
+        journey.setTravelAgency(travelAgency);
+
+        // Act
+        JourneyDto dto = journeyMapper.toDto(journey);
+
+        // Assert
+        assertEquals(journey.getId(), dto.getId());
+        assertEquals(journey.getCountry(), dto.getCountry());
+        assertEquals(journey.getTown(), dto.getTown());
+        assertEquals(journey.getDateToJourney(), dto.getDateToJourney());
+        assertEquals(journey.getDateFromJourney(), dto.getDateFromJourney());
+        assertEquals(journey.getTravelAgency().getId(), dto.getTravelAgency().getId());
+    }
+
+    @Test
+    void testToEntity() {
+        // Arrange
+        JourneyDto dto = new JourneyDto();
+        dto.setId(1L);
+        dto.setCountry("Country");
+        dto.setTown("Town");
+        dto.setDateToJourney(LocalDate.of(2024, 3, 10));
+        dto.setDateFromJourney(LocalDate.of(2024, 3, 5));
+        TravelAgencyDto travelAgencyDto = new TravelAgencyDto();
+        travelAgencyDto.setId(1L);
+        dto.setTravelAgency(travelAgencyDto);
+
+        TravelAgency travelAgency = new TravelAgency();
+        travelAgency.setId(1L);
+        when(travelAgencyRepository.findById(dto.getTravelAgency().getId())).thenReturn(travelAgency);
+
+        // Act
+        Journey journey = journeyMapper.toEntity(dto);
+
+        // Assert
+        assertEquals(dto.getId(), journey.getId());
+        assertEquals(dto.getCountry(), journey.getCountry());
+        assertEquals(dto.getTown(), journey.getTown());
+        assertEquals(dto.getDateToJourney(), journey.getDateToJourney());
+        assertEquals(dto.getDateFromJourney(), journey.getDateFromJourney());
+        assertEquals(dto.getTravelAgency().getId(), journey.getTravelAgency().getId());
+    }
+}

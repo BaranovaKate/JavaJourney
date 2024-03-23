@@ -3,13 +3,12 @@ package by.baranova.javajourney.service;
 import by.baranova.javajourney.cache.Cache;
 import by.baranova.javajourney.dto.JourneyDto;
 import by.baranova.javajourney.dto.TravelAgencyDto;
+import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.repository.JourneyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
@@ -65,21 +64,12 @@ public class JourneyService {
     }
 
     /**
-     * Deletes journeys by country.
-     *
-     * @param country The country to delete journeys from.
-     */
-    public void deleteByCountry(final String country) {
-        journeyRepository.deleteByCountry(country);
-        cache.clear();
-    }
-
-    /**
      * Retrieves a list of all journeys.
      *
      * @return A list of JourneyDto entities.
      * @throws InterruptedException If interrupted while sleeping.
      */
+
     public List<JourneyDto> findJourneys() throws InterruptedException {
         List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys");
         if (journeys == null) {
@@ -115,14 +105,17 @@ public class JourneyService {
             throw new IllegalArgumentException("No journeys provided");
         }
         boolean agencyNameConflict = journeyDtos.stream()
-                .anyMatch(journeyDto -> !journeyDto.getTravelAgency().getName().equals(agency));
+                .anyMatch(journeyDto -> {
+                    TravelAgencyDto travelAgency = journeyDto.getTravelAgency();
+                    return travelAgency == null || !travelAgency.getName().equals(agency);
+                });
         if (agencyNameConflict) {
             throw new IllegalArgumentException("Agency name in URL does not match agency name in provided journey data");
         }
         List<String> errors = journeyDtos.stream()
                 .map(journeyDto -> {
                     try {
-                        save(journeyDto); // Используем ваш существующий метод сохранения
+                        journeyRepository.save(journeyDto);
                         return null;
                     } catch (Exception e) {
                         return "Error creating journey: " + e.getMessage();

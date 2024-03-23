@@ -60,8 +60,7 @@ public class TravelAgencyController {
             final @PathVariable Long id) {
         try {
             LOGGER.info("Display Travel Agencies by id");
-            TravelAgency travelAgency = agencyService.findAgencyById(id)
-                    .getBody();
+            TravelAgency travelAgency = agencyService.findAgencyById(id);
             return ResponseEntity.ok(travelAgency);
         } catch (EntityNotFoundException e) {
             LOGGER.error(ERROR, e.getMessage());

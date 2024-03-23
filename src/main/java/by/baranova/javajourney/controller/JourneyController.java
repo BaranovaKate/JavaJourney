@@ -103,25 +103,6 @@ public class JourneyController {
     }
 
     /**
-     * Deletes journeys by country.
-     *
-     * @param country the country of the journeys to delete
-     * @return success message
-     */
-    @DeleteMapping("/delete")
-    @Operation(
-            method = "DELETE",
-            summary = "Удалить путешествие по названию страны",
-            description = "Удаляет путешестве из базы данных по названию страны"
-    )
-    public String handleJourneyDeleteByCountry(
-            final @RequestParam(name = "country") String country) {
-        journeyService.deleteByCountry(country);
-        LOGGER.info("Delete Journey by Country");
-        return "Successfully deleted journeys in " + country;
-    }
-
-    /**
      * Handles creation of a new journey.
      *
      * @param journey the journey to create

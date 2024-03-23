@@ -1,4 +1,5 @@
 package by.baranova.javajourney.dto;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.io.Serializable;
@@ -16,6 +17,7 @@ public class TravelAgencyDto implements Serializable {
 
     /** The name of the travel agency. */
     @NotNull
+    @NotBlank
     private String name;
 
 }
