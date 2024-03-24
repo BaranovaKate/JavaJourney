@@ -24,6 +24,7 @@ public class AgencyService {
     public TravelAgency findAgencyById(final Long id) {
         TravelAgency agency = travelAgencyRepository.findById(id);
         if (agency == null) {
+            LOGGER.info("Agency with ID " + id + " not found");
             throw new EntityNotFoundException(
                     "Agency with ID " + id + " not found");
         }
@@ -35,8 +36,16 @@ public class AgencyService {
     }
 
     public void deleteById(final Long id) {
-        List<Journey> journeysWithAgency = journeyRepository.findByTravelAgencyId(id);
-        journeysWithAgency.forEach(journey -> journeyRepository.deleteById(journey.getId()));
+        TravelAgency agencyToDelete = findAgencyById(id);
+        if (agencyToDelete == null) {
+            LOGGER.info("Agency with ID " + id + " not found");
+            throw new EntityNotFoundException(
+                    "Travel Agency with ID " + id + " not found");
+        }
+        List<Journey> journeysWithAgency = journeyRepository
+                .findByTravelAgencyId(id);
+        journeysWithAgency.forEach(journey -> journeyRepository
+                .deleteById(journey.getId()));
         travelAgencyRepository.deleteById(id);
     }
 
@@ -47,6 +56,7 @@ public class AgencyService {
     public void update(final Long id, final TravelAgencyDto updatedAgency) {
         TravelAgency agency = findAgencyById(id);
         if (agency == null) {
+            LOGGER.info("Agency with ID " + id + " does not exist");
             throw new EntityNotFoundException(
                     "Travel agency with ID " + id + " does not exist");
         }

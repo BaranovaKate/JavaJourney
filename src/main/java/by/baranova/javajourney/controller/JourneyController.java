@@ -1,6 +1,7 @@
 package by.baranova.javajourney.controller;
 
 import by.baranova.javajourney.dto.JourneyDto;
+import by.baranova.javajourney.service.CounterService;
 import by.baranova.javajourney.service.JourneyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -70,6 +71,9 @@ public class JourneyController {
             LOGGER.info("Display Journeys by country");
             return journeyService.findJourneysByCountry(country);
         } else {
+            CounterService.incrementRequestCount();
+            int requestCount = CounterService.getRequestCount();
+            LOGGER.info("Текущее количество запросов: {}", requestCount);
             LOGGER.info("Display all Journeys");
             return journeyService.findJourneys();
         }

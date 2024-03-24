@@ -8,7 +8,6 @@ class JourneyTest {
 
     @Test
     void testJourneyConstructorAndGetters() {
-        // Arrange
         Long id = 1L;
         String country = "Country";
         String town = "Town";
@@ -16,7 +15,6 @@ class JourneyTest {
         LocalDate dateFromJourney = LocalDate.of(2024, 3, 20);
         TravelAgency travelAgency = new TravelAgency();
 
-        // Act
         Journey journey = new Journey();
         journey.setId(id);
         journey.setCountry(country);
@@ -25,7 +23,6 @@ class JourneyTest {
         journey.setDateFromJourney(dateFromJourney);
         journey.setTravelAgency(travelAgency);
 
-        // Assert
         assertEquals(id, journey.getId());
         assertEquals(country, journey.getCountry());
         assertEquals(town, journey.getTown());

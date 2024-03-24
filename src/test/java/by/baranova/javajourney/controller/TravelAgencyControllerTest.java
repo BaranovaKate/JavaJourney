@@ -29,68 +29,53 @@ class TravelAgencyControllerTest {
 
     @Test
     void testGetTravelAgencyById_Success() {
-        // Arrange
         Long id = 1L;
         TravelAgency travelAgency = new TravelAgency();
         when(agencyService.findAgencyById(id)).thenReturn(travelAgency);
 
-        // Act
         ResponseEntity<TravelAgency> response = travelAgencyController.getTravelAgencyById(id);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(travelAgency, response.getBody());
     }
 
     @Test
     void testGetTravelAgencyById_EntityNotFound() {
-        // Arrange
         Long id = 1L;
         when(agencyService.findAgencyById(id)).thenThrow(EntityNotFoundException.class);
 
-        // Act
         ResponseEntity<TravelAgency> response = travelAgencyController.getTravelAgencyById(id);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNull(response.getBody());
     }
 
     @Test
     void testGetAllTravelAgenciesWithJourneys() {
-        // Arrange
         List<TravelAgency> travelAgencies = new ArrayList<>();
         when(agencyService.findAgencies()).thenReturn(travelAgencies);
 
-        // Act
         List<TravelAgency> result = travelAgencyController.getAllTravelAgenciesWithJourneys();
 
-        // Assert
         assertEquals(travelAgencies, result);
     }
 
     @Test
     void testCreateTravelAgency() {
-        // Arrange
         TravelAgency newTravelAgency = new TravelAgency();
 
-        // Act
         String result = travelAgencyController.createTravelAgency(newTravelAgency);
 
-        // Assert
         assertEquals("Successfully created a new agency", result);
         verify(agencyService, times(1)).save(newTravelAgency);
     }
 
     @Test
     void testDeleteTravelAgencyById_Success() {
-        // Arrange
         Long id = 1L;
 
-        // Act
         ResponseEntity<String> response = travelAgencyController.deleteTravelAgencyById(id);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Successfully deleted the agency with id: " + id, response.getBody());
         verify(agencyService, times(1)).deleteById(id);
@@ -98,28 +83,22 @@ class TravelAgencyControllerTest {
 
     @Test
     void testDeleteTravelAgencyById_EntityNotFound() {
-        // Arrange
         Long id = 1L;
         doThrow(EntityNotFoundException.class).when(agencyService).deleteById(id);
 
-        // Act
         ResponseEntity<String> response = travelAgencyController.deleteTravelAgencyById(id);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNull(response.getBody());
     }
 
     @Test
     void testHandleAgencyUpdate_Success() {
-        // Arrange
         Long id = 1L;
         TravelAgencyDto travelAgencyDto = new TravelAgencyDto();
 
-        // Act
         ResponseEntity<String> response = travelAgencyController.handleAgencyUpdate(id, travelAgencyDto);
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Successfully updated journey with id " + id, response.getBody());
         verify(agencyService, times(1)).update(id, travelAgencyDto);
@@ -127,15 +106,12 @@ class TravelAgencyControllerTest {
 
     @Test
     void testHandleAgencyUpdate_EntityNotFound() {
-        // Arrange
         Long id = 1L;
         TravelAgencyDto travelAgencyDto = new TravelAgencyDto();
         doThrow(EntityNotFoundException.class).when(agencyService).update(id, travelAgencyDto);
 
-        // Act
         ResponseEntity<String> response = travelAgencyController.handleAgencyUpdate(id, travelAgencyDto);
 
-        // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNull(response.getBody());
     }

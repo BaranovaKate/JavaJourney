@@ -15,13 +15,10 @@ class HibernateConfigTest {
 
     @Test
     void testSessionFactoryCreation() {
-        // Arrange
         SessionFactory sessionFactory;
 
-        // Act
         sessionFactory = hibernateConfig.sessionFactory();
 
-        // Assert
         assertNotNull(sessionFactory);
     }
 }

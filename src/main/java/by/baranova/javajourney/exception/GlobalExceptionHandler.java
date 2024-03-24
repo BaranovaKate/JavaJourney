@@ -82,7 +82,6 @@ public class GlobalExceptionHandler {
                 .body("405 Method Not Allowed");
     }
 
-
     /**
      * Handles runtime exceptions.
      *

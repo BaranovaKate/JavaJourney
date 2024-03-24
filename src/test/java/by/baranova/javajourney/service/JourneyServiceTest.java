@@ -6,19 +6,18 @@ import by.baranova.javajourney.dto.TravelAgencyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.boot.test.context.SpringBootTest;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class JourneyServiceTest {
 
     @Mock
@@ -61,7 +60,6 @@ class JourneyServiceTest {
 
         assertThrows(EntityNotFoundException.class, () -> journeyService.findJourneyById(id));
     }
-
 
     @Test
     void deleteById_ExistingId_DeletesJourneyAndClearsCache() {
@@ -150,14 +148,13 @@ class JourneyServiceTest {
     }
 
     @Test
-    void createJourneysBulk_ExceptionThrownDuringCreation_ThrowsRuntimeException() {
-
+    void createJourneysBulk_ThrowsRuntimeException() {
         List<JourneyDto> journeyDtos = Collections.singletonList(testJourneyDto);
-        doThrow(new RuntimeException("Test exception")).when(journeyRepository).save(any(JourneyDto.class));
+
+        lenient().doThrow(new RuntimeException("Test exception")).when(journeyRepository).save(any(JourneyDto.class));
 
         assertThrows(RuntimeException.class, () -> journeyService.createJourneysBulk(journeyDtos, "TestAgency"));
     }
-
 
     @Test
     void testUpdate() {
@@ -170,5 +167,4 @@ class JourneyServiceTest {
         verify(journeyRepository, times(1)).update(id, journeyDto);
         verify(cache, times(1)).clear();
     }
-
 }

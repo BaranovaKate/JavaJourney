@@ -7,13 +7,16 @@ import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+@ExtendWith(MockitoExtension.class)
 class JourneyMapperTest {
 
     private JourneyMapper journeyMapper;
@@ -23,13 +26,11 @@ class JourneyMapperTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
         journeyMapper = new JourneyMapper(travelAgencyRepository);
     }
 
     @Test
     void testToDto() {
-        // Arrange
         Journey journey = new Journey();
         journey.setId(1L);
         journey.setCountry("Country");
@@ -40,10 +41,8 @@ class JourneyMapperTest {
         travelAgency.setId(1L);
         journey.setTravelAgency(travelAgency);
 
-        // Act
         JourneyDto dto = journeyMapper.toDto(journey);
 
-        // Assert
         assertEquals(journey.getId(), dto.getId());
         assertEquals(journey.getCountry(), dto.getCountry());
         assertEquals(journey.getTown(), dto.getTown());
@@ -54,7 +53,6 @@ class JourneyMapperTest {
 
     @Test
     void testToEntity() {
-        // Arrange
         JourneyDto dto = new JourneyDto();
         dto.setId(1L);
         dto.setCountry("Country");
@@ -69,10 +67,8 @@ class JourneyMapperTest {
         travelAgency.setId(1L);
         when(travelAgencyRepository.findById(dto.getTravelAgency().getId())).thenReturn(travelAgency);
 
-        // Act
         Journey journey = journeyMapper.toEntity(dto);
 
-        // Assert
         assertEquals(dto.getId(), journey.getId());
         assertEquals(dto.getCountry(), journey.getCountry());
         assertEquals(dto.getTown(), journey.getTown());

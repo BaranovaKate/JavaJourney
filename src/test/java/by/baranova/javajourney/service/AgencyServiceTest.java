@@ -6,9 +6,11 @@ import by.baranova.javajourney.repository.JourneyRepository;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class AgencyServiceTest {
 
     @Mock
@@ -26,10 +29,6 @@ class AgencyServiceTest {
 
     @InjectMocks
     private AgencyService agencyService;
-
-    public AgencyServiceTest() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void testFindAgencyById_ExistingId() {
@@ -84,7 +83,6 @@ class AgencyServiceTest {
 
         assertThrows(EntityNotFoundException.class, () -> agencyService.deleteById(id));
     }
-
     @Test
     void testFindAgencies() {
         List<TravelAgency> expectedAgencies = new ArrayList<>();

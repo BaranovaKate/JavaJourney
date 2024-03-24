@@ -10,15 +10,12 @@ class TravelAgencyMapperTest {
 
     @Test
     void testToDto() {
-        // Arrange
         TravelAgency travelAgency = new TravelAgency();
         travelAgency.setId(1L);
         travelAgency.setName("Travel World");
 
-        // Act
         TravelAgencyDto dto = TravelAgencyMapper.toDto(travelAgency);
 
-        // Assert
         assertEquals(travelAgency.getId(), dto.getId());
         assertEquals(travelAgency.getName(), dto.getName());
     }

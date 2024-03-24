@@ -63,17 +63,10 @@ public class JourneyService {
         cache.clear();
     }
 
-    /**
-     * Retrieves a list of all journeys.
-     *
-     * @return A list of JourneyDto entities.
-     * @throws InterruptedException If interrupted while sleeping.
-     */
 
-    public List<JourneyDto> findJourneys() throws InterruptedException {
+    public List<JourneyDto> findJourneys() {
         List<JourneyDto> journeys = (List<JourneyDto>) cache.get("journeys");
         if (journeys == null) {
-            TimeUnit.SECONDS.sleep(SLEEP_DURATION_SECONDS);
             journeys = journeyRepository.findAll();
             cache.put("journeys", journeys);
         } else {
