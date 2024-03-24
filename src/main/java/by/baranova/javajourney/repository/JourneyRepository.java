@@ -1,6 +1,5 @@
 package by.baranova.javajourney.repository;
 
-import by.baranova.javajourney.dto.TravelAgencyDto;
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.dto.JourneyDto;
 import by.baranova.javajourney.mapper.JourneyMapper;
@@ -10,7 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

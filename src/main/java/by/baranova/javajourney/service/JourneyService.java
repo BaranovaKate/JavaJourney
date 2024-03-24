@@ -3,7 +3,6 @@ package by.baranova.javajourney.service;
 import by.baranova.javajourney.cache.Cache;
 import by.baranova.javajourney.dto.JourneyDto;
 import by.baranova.javajourney.dto.TravelAgencyDto;
-import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.repository.JourneyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Service class for managing Journey entities.
@@ -30,8 +28,6 @@ public class JourneyService {
     /** Logger for logging messages. */
     static final Logger LOGGER = LogManager.getLogger(JourneyService.class);
 
-    /** Sleep duration in seconds. */
-    private static final int SLEEP_DURATION_SECONDS = 3;
     /**
      * Retrieves a journey by its ID.
      *
