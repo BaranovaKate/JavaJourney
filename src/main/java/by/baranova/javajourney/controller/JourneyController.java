@@ -45,10 +45,15 @@ public class JourneyController {
 
     @PostMapping
     @Operation(summary = "Создать новое путешествие", description = "Создает новое путешествие")
-    public ResponseEntity<String> createJourney(@Valid @RequestBody Journey journey) {
-        journeyService.save(journey);
-        LOGGER.info("Journey created");
-        return ResponseEntity.status(HttpStatus.CREATED).body("Journey created");
+    public ResponseEntity<String> createJourney(@Valid @RequestBody Journey newJourney) {
+        try {
+            journeyService.save(newJourney);
+            LOGGER.info("Journey created: {}", newJourney);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Successfully created a new journey");
+        } catch (Exception e) {
+            LOGGER.error("Error creating journey: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating journey");
+        }
     }
 
     @PutMapping("/{id}")
@@ -56,11 +61,14 @@ public class JourneyController {
     public ResponseEntity<String> updateJourney(@PathVariable Long id, @Valid @RequestBody Journey updatedJourney) {
         try {
             journeyService.update(id, updatedJourney);
-            LOGGER.info("Journey updated");
-            return ResponseEntity.ok("Journey updated");
+            LOGGER.info("Journey updated: {}", updatedJourney);
+            return ResponseEntity.ok("Successfully updated journey with ID: " + id);
         } catch (EntityNotFoundException e) {
             LOGGER.error("Journey not found: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Journey not found");
+        } catch (Exception e) {
+            LOGGER.error("Error updating journey: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error updating journey");
         }
     }
 

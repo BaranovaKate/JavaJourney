@@ -33,17 +33,51 @@ public class JourneyService {
         journeyRepository.save(journey);
     }
 
+//    public void update(final Long id, final Journey updatedJourney) {
+//        Journey journey = journeyRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException(
+//                        "Journey with ID " + id + "not found"));
+//
+//        journey.setCountry(updatedJourney.getCountry());
+//        journey.setTown(updatedJourney.getTown());
+//        journey.setDateFromJourney(updatedJourney.getDateFromJourney());
+//        journey.setDateToJourney(updatedJourney.getDateToJourney());
+//        journey.setTravelAgency(updatedJourney.getTravelAgency());
+//
+//        journeyRepository.save(journey);
+//    }
+
     public void update(final Long id, final Journey updatedJourney) {
         Journey journey = journeyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Journey with ID " + id + "not found"));
+                        "Journey with ID " + id + " not found"));
 
-                        journey.setCountry(updatedJourney.getCountry());
-        journey.setTown(updatedJourney.getTown());
-        journey.setDateFromJourney(updatedJourney.getDateFromJourney());
-        journey.setDateToJourney(updatedJourney.getDateToJourney());
-        journey.setTravelAgency(updatedJourney.getTravelAgency());
-
-        journeyRepository.save(journey);
+        journeyRepository.updateJourney(
+                id,
+                updatedJourney.getCountry(),
+                updatedJourney.getTown(),
+                updatedJourney.getDateToJourney(),
+                updatedJourney.getDateFromJourney(),
+                updatedJourney.getTravelAgency().getId()
+        );
     }
+
+
+//    public void update(final Long id, final Journey updatedJourney) {
+//        // Убедитесь, что путешествие с данным ID существует
+//        if (!journeyRepository.existsById(id)) {
+//            throw new EntityNotFoundException("Journey with ID " + id + " not found");
+//        }
+//
+//        // Используем метод updateJourney из репозитория для обновления данных
+//        journeyRepository.updateJourney(
+//                id,
+//                updatedJourney.getCountry(),
+//                updatedJourney.getTown(),
+//                updatedJourney.getDateToJourney(),
+//                updatedJourney.getDateFromJourney(),
+//                updatedJourney.getTravelAgency().getId()
+//        );
+//    }
+
 }

@@ -4,7 +4,6 @@ import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.TravelAgency;
 import by.baranova.javajourney.repository.JourneyRepository;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +17,7 @@ public class AgencyService {
     private final JourneyRepository journeyRepository;
 
     public TravelAgency findAgencyById(final Long id) {
-        return travelAgencyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Agency with ID " + id + " not found"));
+        return travelAgencyRepository.findAById(id);
     }
 
     public void save(final TravelAgency travelAgency) {

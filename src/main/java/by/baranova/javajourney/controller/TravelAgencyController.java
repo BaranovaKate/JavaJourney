@@ -25,21 +25,22 @@ public class TravelAgencyController {
     private static final Logger LOGGER = LogManager.getLogger(TravelAgencyController.class);
 
     @GetMapping("/{id}")
-    @Operation(
+        @Operation(
             method = "GET",
             summary = "Получить туристическое агентство по ID",
             description = "Возвращает туристическое агентство по ID"
     )
     public ResponseEntity<TravelAgency> getTravelAgencyById(@PathVariable Long id) {
         try {
+            LOGGER.info("Fetching Travel Agency with ID: {}", id);
             TravelAgency travelAgency = agencyService.findAgencyById(id);
-            LOGGER.info("Retrieved Travel Agency by ID: {}", id);
             return ResponseEntity.ok(travelAgency);
         } catch (EntityNotFoundException e) {
-            LOGGER.error("Error: {}", e.getMessage());
+            LOGGER.error("Travel Agency not found with ID: {}", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
 
     @GetMapping("/all")
     @Operation(
