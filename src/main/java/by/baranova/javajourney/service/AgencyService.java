@@ -1,14 +1,13 @@
 package by.baranova.javajourney.service;
+
 import by.baranova.javajourney.model.Journey;
 import by.baranova.javajourney.model.TravelAgency;
-import by.baranova.javajourney.dto.TravelAgencyDto;
 import by.baranova.javajourney.repository.JourneyRepository;
 import by.baranova.javajourney.repository.TravelAgencyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,17 +15,12 @@ import java.util.List;
 public class AgencyService {
 
     private final TravelAgencyRepository travelAgencyRepository;
-
     private final JourneyRepository journeyRepository;
 
-
     public TravelAgency findAgencyById(final Long id) {
-        TravelAgency agency = travelAgencyRepository.findById(id);
-        if (agency == null) {
-            throw new EntityNotFoundException(
-                    "Agency with ID " + id + " not found");
-        }
-        return agency;
+        return travelAgencyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Agency with ID " + id + " not found"));
     }
 
     public void save(final TravelAgency travelAgency) {
@@ -35,27 +29,20 @@ public class AgencyService {
 
     public void deleteById(final Long id) {
         TravelAgency agencyToDelete = findAgencyById(id);
-        if (agencyToDelete == null) {
-            throw new EntityNotFoundException(
-                    "Travel Agency with ID " + id + " not found");
-        }
-        List<Journey> journeysWithAgency = journeyRepository
-                .findByTravelAgencyId(id);
-        journeysWithAgency.forEach(journey -> journeyRepository
-                .deleteById(journey.getId()));
-        travelAgencyRepository.deleteById(id);
+
+        List<Journey> journeysWithAgency = journeyRepository.findByTravelAgencyId(id);
+        journeyRepository.deleteAll(journeysWithAgency);
+
+        travelAgencyRepository.delete(agencyToDelete);
     }
 
     public List<TravelAgency> findAgencies() {
         return travelAgencyRepository.findAllWithJourneys();
     }
 
-    public void update(final Long id, final TravelAgencyDto updatedAgency) {
+    public void update(final Long id, final TravelAgency updatedAgency) {
         TravelAgency agency = findAgencyById(id);
-        if (agency == null) {
-            throw new EntityNotFoundException(
-                    "Travel agency with ID " + id + " does not exist");
-        }
-        travelAgencyRepository.update(id, updatedAgency);
+        agency.setName(updatedAgency.getName());
+        travelAgencyRepository.save(agency);
     }
 }

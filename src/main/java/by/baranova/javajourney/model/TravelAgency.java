@@ -19,26 +19,17 @@ import java.util.List;
 @Entity
 @Table(name = "travel_agencies")
 public class TravelAgency {
-    /** Constant. */
+
     private static final int CONST = 64;
 
-    /** The unique identifier of the travel agency. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    /** The name of the travel agency. */
     @Column(name = "name", nullable = false, length = CONST)
     private String name;
 
-    /**
-     * The list of journeys associated with the travel agency.
-     * Lazy fetching strategy is used to load the journeys only when needed.
-     * Cascading is set to ALL to apply any
-     * operation performed on the travel agency
-     * to its associated journeys as well.
-     */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "travelAgency",
             cascade = CascadeType.ALL)
     @JsonIgnoreProperties("travelAgency")

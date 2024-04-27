@@ -1,8 +1,11 @@
 package by.baranova.javajourney.service;
-import java.util.concurrent.atomic.AtomicInteger;
-public class CounterService {
+import lombok.Data;
 
-    private CounterService() {}
+import java.util.concurrent.atomic.AtomicInteger;
+@Data
+public class CounterServiceJourney {
+
+    private CounterServiceJourney() {}
     private static AtomicInteger requestCount = new AtomicInteger(0);
 
     public static synchronized void incrementRequestCount() {
@@ -12,8 +15,9 @@ public class CounterService {
     public static synchronized int getRequestCount() {
         return requestCount.get();
     }
-
 }
+
+
 
 
 
